@@ -39,6 +39,12 @@ namespace Corolla_GUIMVVM_E120
         /// <param name="e">Información detallada acerca de la solicitud y el proceso de inicio.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+#if DEBUG
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                this.DebugSettings.EnableFrameRateCounter = true;
+            }
+#endif
             Frame rootFrame = Window.Current.Content as Frame;
 
             // No repetir la inicialización de la aplicación si la ventana tiene contenido todavía,

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Corolla_GUIMVVM_E120.Views.Base;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Corolla_GUIMVVM_E120
     /// <summary>
     /// Página vacía que se puede usar de forma independiente o a la que se puede navegar dentro de un objeto Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : PageBase
     {
         public MainPage()
         {

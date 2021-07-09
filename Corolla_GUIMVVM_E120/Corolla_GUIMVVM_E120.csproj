@@ -119,7 +119,19 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Contants\Constants.cs" />
+    <Compile Include="Models\PageType.cs" />
+    <Compile Include="Services\DialogService\DialogService.cs" />
+    <Compile Include="Services\DialogService\IDialogService.cs" />
+    <Compile Include="Services\LoaderService\IloaderService.cs" />
+    <Compile Include="Services\LoaderService\LoaderService.cs" />
+    <Compile Include="ViewModels\Base\DelegateCommand.cs" />
+    <Compile Include="ViewModels\Base\DelegateCommandAsync.cs" />
+    <Compile Include="ViewModels\Base\ViewModelBase.cs" />
+    <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
+    <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="Views\Base\PageBase.cs" />
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,7 +156,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="Styles\ResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -162,6 +178,10 @@
     <PackageReference Include="Unity">
       <Version>5.11.10</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <PRIResource Include="Strings\es-ES\Resources.resw" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
