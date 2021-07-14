@@ -1,0 +1,56 @@
+﻿<base:PageBase
+    x:Class="Corolla_GUIMVVM_E120.Views.ClockUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Corolla_GUIMVVM_E120.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:base="using:Corolla_GUIMVVM_E120.Views.Base"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    DataContext="{Binding ClockViewModel, Source={StaticResource Locator}}"
+    mc:Ignorable="d"
+    d:DesignHeight="100"
+    d:DesignWidth="200"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Name="ClockGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <StackPanel
+                    Grid.Row="0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <TextBlock  Text="{Binding Hour , Mode=OneWay}"
+                                    FontSize="65*"
+                                    VerticalAlignment="Center"      
+                                    HorizontalAlignment="Center" 
+                                    FontFamily="Arial" 
+                                    FontWeight="Bold" 
+                                    TextLineBounds="Tight"/>
+            <TextBlock Name="Brand"
+                                   Text=":"
+                                   FontSize="45"
+                                   Height="45"
+                                   FontFamily="Arial"
+                                   TextLineBounds="Tight"/>
+            <TextBlock Name="MinuteValue"
+                                   Text="{Binding Minute, Mode=OneWay}"
+                                   FontSize="45"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   FontFamily="Arial"
+                                   TextLineBounds="Tight">
+            </TextBlock>
+        </StackPanel>
+        <TextBlock Name="DateValue"
+                               Grid.Row="1"
+                               Text="{Binding Date,Mode=OneWay}"
+                               FontSize="20"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               FontFamily="Arial" 
+                               FontWeight="Bold"
+                               TextLineBounds="Tight">
+        </TextBlock>
+    </Grid>
+</base:PageBase>

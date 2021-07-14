@@ -20,7 +20,6 @@ namespace Corolla_GUIMVVM_E120.Services.DialogService
 
         public void StatusNotification(string message, NotifyType type)
         {
-
             ContentDialog contentDialog = new ContentDialog();
             switch (type)
             {

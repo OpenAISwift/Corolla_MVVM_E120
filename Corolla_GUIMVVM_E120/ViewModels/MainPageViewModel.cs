@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
@@ -19,6 +20,7 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         {
             _dialogService = dialogService;
             _loaderService = loaderService;
+            
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs args)

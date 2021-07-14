@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:base="using:Corolla_GUIMVVM_E120.Views.Base"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:clock="using:Corolla_GUIMVVM_E120.Views"
     mc:Ignorable="d"
     DataContext="{Binding MainPageViewModel, Source={StaticResource Locator}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -24,6 +25,9 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
+                <Grid Background="Red" Grid.Column="0" />
+                <Grid Background="Black" Grid.Column="1" />
+                <clock:ClockUserControl Grid.Column="2" />
             </Grid>
             <Grid x:Name="Navigation" Grid.Row="1">
                 <muxc:NavigationView Name="NavView"

@@ -130,11 +130,15 @@
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
     <Compile Include="ViewModels\ClimateControlViewModel.cs" />
+    <Compile Include="ViewModels\ClockViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\Base\PageBase.cs" />
     <Compile Include="Views\ClimateControlView.xaml.cs">
       <DependentUpon>ClimateControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ClockUserControl.xaml.cs">
+      <DependentUpon>ClockUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -169,6 +173,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ClimateControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ClockUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

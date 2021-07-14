@@ -22,6 +22,8 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
             _container.RegisterType<SettingsViewModel>();
             _container.RegisterType<ClimateControlViewModel>();
 
+            _container.RegisterType<ClockViewModel>();
+
             _container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILoaderService, LoaderService>(new ContainerControlledLifetimeManager());
         }
@@ -39,6 +41,11 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
         public ClimateControlViewModel ClimateControlViewModel
         {
             get { return _container.Resolve<ClimateControlViewModel>(); }
+        }
+
+        public ClockViewModel ClockViewModel
+        {
+            get { return _container.Resolve<ClockViewModel>(); }
         }
     }
 }
