@@ -80,7 +80,7 @@ namespace Corolla_GUIMVVM_E120.ViewModels
             {
                 dispatcherTimer = new DispatcherTimer
                 {
-                    Interval = TimeSpan.FromMinutes(60 - DateTime.Now.Second)
+                    Interval = TimeSpan.FromSeconds(60 - DateTime.Now.Second)
                 };
                 dispatcherTimer.Tick += DispatcherTimer_Tick;
                 dispatcherTimer.Start();
