@@ -9,12 +9,13 @@ namespace Corolla_GUIMVVM_E120.Services.LoaderService
 {
     public class LoaderService : ILoaderService
     {
-        ResourceLoader loader;
+        private ResourceLoader loader;
+
         public LoaderService()
         {
             loader = ResourceLoader.GetForCurrentView();
         }
-        public string getString(string key)
+        public string GetString(string key)
         {
             return loader.GetString(key);
         }
