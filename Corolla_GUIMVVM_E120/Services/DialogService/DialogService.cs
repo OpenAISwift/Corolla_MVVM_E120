@@ -1,10 +1,6 @@
 ﻿using Corolla_GUIMVVM_E120.Contants;
 using Corolla_GUIMVVM_E120.Services.LoaderService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Windows.UI.Xaml.Controls;
 
 namespace Corolla_GUIMVVM_E120.Services.DialogService
@@ -24,19 +20,19 @@ namespace Corolla_GUIMVVM_E120.Services.DialogService
             switch (type)
             {
                 case NotifyType.Status:
-                    contentDialog.Title = _loaderService.getString("StatusApplicationDialog");
+                    contentDialog.Title = _loaderService.GetString(_loaderService.GetString("StatusApplicationDialog"));
                     break;
                 case NotifyType.Information:
-                    contentDialog.Title = _loaderService.getString("InformationApplicationDialog");
+                    contentDialog.Title = _loaderService.GetString(_loaderService.GetString("InformationApplicationDialog"));
                     break;
                 case NotifyType.Error:
-                    contentDialog.Title = _loaderService.getString("ErrorApplicationDialog");
+                    contentDialog.Title = _loaderService.GetString(_loaderService.GetString("StatusApplicationDialog"));
                     break;
                 default:
                     break;
             }
             contentDialog.Content = message;
-            contentDialog.CloseButtonText = _loaderService.getString("ButtonClose");
+            contentDialog.CloseButtonText = _loaderService.GetString("ButtonClose");
             _ = contentDialog.ShowAsync();
         }
     }
