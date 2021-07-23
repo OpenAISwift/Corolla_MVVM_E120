@@ -1,4 +1,5 @@
 ﻿using Corolla_GUIMVVM_E120.ViewModels.Base;
+using Corolla_GUIMVVM_E120.Models;
 
 using System;
 using System.Collections.Generic;
@@ -12,43 +13,42 @@ namespace Corolla_GUIMVVM_E120.ViewModels
 {
     public class ClockViewModel : ViewModelBase
     {
-        DispatcherTimer dispatcherTimer;
+        private DispatcherTimer dispatcherTimer;
+        private readonly ClockModel _clock;
 
-        private string _hour;
         public string Hour
         {
-            get { return _hour; }
+            get { return _clock.Hour; }
             set
             {
-                _hour = value;
+                _clock.Hour = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string _minute;
         public string Minute
         {
-            get { return _minute; }
+            get { return _clock.Minute; }
             set
             {
-                _minute = value;
+                _clock.Minute = value;
                 RaisePropertyChanged();
             }
         }
 
-        private string _date;
         public string Date
         {
-            get { return _date; }
+            get { return _clock.Date; }
             set
             {
-                _date = value;
+                _clock.Date = value;
                 RaisePropertyChanged();
             }
         }
 
         public ClockViewModel()
         {
+            _clock = new ClockModel();
             InitClock();
         }
 

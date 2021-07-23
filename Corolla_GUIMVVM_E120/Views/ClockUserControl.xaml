@@ -12,7 +12,7 @@
     d:DesignWidth="200"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Name="ClockGrid">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition Height="30"/>
@@ -21,7 +21,7 @@
                     Grid.Row="0"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center">
-            <TextBlock  Text="{Binding Hour , Mode=OneWay}"
+            <TextBlock  Text="{x:Bind Clock.Hour , Mode=OneWay}"
                                     FontSize="65*"
                                     VerticalAlignment="Center"      
                                     HorizontalAlignment="Center" 
@@ -35,7 +35,7 @@
                                    FontFamily="Arial"
                                    TextLineBounds="Tight"/>
             <TextBlock Name="MinuteValue"
-                                   Text="{Binding Minute, Mode=OneWay}"
+                                   Text="{x:Bind Clock.Minute, Mode=OneWay}"
                                    FontSize="45"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
@@ -45,7 +45,7 @@
         </StackPanel>
         <TextBlock Name="DateValue"
                                Grid.Row="1"
-                               Text="{Binding Date,Mode=OneWay}"
+                               Text="{x:Bind Clock.Date ,Mode=OneWay}"
                                FontSize="20"
                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                FontFamily="Arial" 

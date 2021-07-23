@@ -1,4 +1,5 @@
 ﻿using Corolla_GUIMVVM_E120.Views.Base;
+using Corolla_GUIMVVM_E120.ViewModels;
 
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace Corolla_GUIMVVM_E120.Views
 {
     public sealed partial class ClockUserControl : PageBase
     {
+        private ClockViewModel Clock => (ClockViewModel)DataContext;
+
         public ClockUserControl()
         {
             this.InitializeComponent();
