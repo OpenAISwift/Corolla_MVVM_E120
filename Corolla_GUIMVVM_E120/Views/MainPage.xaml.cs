@@ -57,7 +57,7 @@ namespace Corolla_GUIMVVM_E120
             // If navigation occurs on SelectionChanged, this isn't needed.
             // Because we use ItemInvoked to navigate, we need to call Navigate
             // here to load the home page.
-            NavView_Navigate("climate", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
+            NavView_Navigate("climateControl", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
 
             // Listen to the window directly so the app responds
             // to accelerator keys regardless of which element has focus.
