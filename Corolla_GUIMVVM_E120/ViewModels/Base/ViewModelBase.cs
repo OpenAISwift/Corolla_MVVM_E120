@@ -8,6 +8,16 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
+        #region Declaracion de eventos
+
+        /// <summary>   
+        /// Evento de multidifusión para las notificaciones de cambios en las propiedades.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+
         private Frame appFrame;
         public Frame AppFrame
         {
@@ -17,24 +27,46 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
         private bool isBusy;
         public bool IsBusy
         {
-            get { return isBusy; }
-            set
-            {
-                isBusy = value;
-                RaisePropertyChanged();
-            }
+            get => isBusy;
+            set => RaisePropertyChanged(ref isBusy, value);
         }
 
         public abstract Task OnNavigatedFrom(NavigationEventArgs args);
         public abstract Task OnNavigatedTo(NavigationEventArgs args);
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+        /// <summary>
+        /// Comprueba si una propiedad ya coincide con un valor deseado.  
+        /// Establece la propiedad y notifica a los oyentes sólo cuando es necesario.
+        /// </summary>
+        /// <typeparam name="T">Tipo de propiedad.</typeparam>
+        /// <param name="storage">Referencia a una propiedad con getter and setter.</param>
+        /// <param name="value">Valor deseado para la propiedad.</param>
+        /// <param name="propertyName">Nombre de la propiedad utilizada para notificar a los oyentes.  
+        /// Este valor es opcional y puede proporcionarse automáticamente cuando se invoca desde
+        /// compiladores que soportan CallerMemberName.</param>
+        /// <returns>Verdadero si el valor fue cambiado, 
+        /// falso si el valor existente coincide con el valor deseado.</returns>
+        protected bool RaisePropertyChanged<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
-            var Handler = PropertyChanged;
-            if (Handler != null)
-                Handler(this, new PropertyChangedEventArgs(propertyName));
+            if (Equals(storage, value))
+            {
+                return false;
+            }
+            storage = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
+        /// <summary>
+        /// Notifica a los oyentes que el valor de una propiedad ha cambiado.
+        /// </summary>
+        /// <param name="propertyName">Nombre de la propiedad utilizada para notificar a los oyentes.  
+        /// Este valor es opcional y puede proporcionarse automáticamente cuando se invoca 
+        /// desde compiladores que soportan <see cref="CallerMemberNameAttribute"/>.</param>
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         internal void SetAppFrame(Frame viewFrame)
