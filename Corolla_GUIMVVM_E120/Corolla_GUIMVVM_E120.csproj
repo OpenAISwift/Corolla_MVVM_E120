@@ -120,11 +120,14 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contants\Constants.cs" />
+    <Compile Include="Models\DeviceListEntry.cs" />
     <Compile Include="Models\PageType.cs" />
     <Compile Include="Services\DialogService\DialogService.cs" />
     <Compile Include="Services\DialogService\IDialogService.cs" />
-    <Compile Include="Services\LoaderService\IloaderService.cs" />
+    <Compile Include="Services\LoaderService\IIoaderService.cs" />
     <Compile Include="Services\LoaderService\LoaderService.cs" />
+    <Compile Include="Services\LocalAppDataService\ILocalAppDataService.cs" />
+    <Compile Include="Services\LocalAppDataService\LocalAppDataService.cs" />
     <Compile Include="ViewModels\Base\DelegateCommand.cs" />
     <Compile Include="ViewModels\Base\DelegateCommandAsync.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />

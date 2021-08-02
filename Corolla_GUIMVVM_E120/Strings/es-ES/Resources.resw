@@ -120,17 +120,58 @@
   <data name="ButtonClose" xml:space="preserve">
     <value>Cerrar</value>
   </data>
+  <data name="ClimateControl.Content" xml:space="preserve">
+    <value>Climatizador </value>
+  </data>
   <data name="ErrorApplicationDialog" xml:space="preserve">
     <value>Error de aplicación</value>
   </data>
   <data name="InformationApplicationDialog" xml:space="preserve">
     <value>Notificación de la aplicacion</value>
   </data>
+  <data name="MessageNotSelected" xml:space="preserve">
+    <value>No seleccionado</value>
+  </data>
+  <data name="SettingsBaudRateComboBox.PlaceholderText" xml:space="preserve">
+    <value>Seleccione la tada de baudios</value>
+  </data>
+  <data name="SettingsBaudRateText.Text" xml:space="preserve">
+    <value>Tasa de baudios</value>
+  </data>
+  <data name="SettingsDataBitsComboBox.PlaceholderText" xml:space="preserve">
+    <value>Selecione el Data Bits</value>
+  </data>
+  <data name="SettingsDataBitText.Text" xml:space="preserve">
+    <value>Data bits</value>
+  </data>
+  <data name="SettingsDeviceComboBox.PlaceholderText" xml:space="preserve">
+    <value>Seleccione dispositivo</value>
+  </data>
+  <data name="SettingsDeviceText.Text" xml:space="preserve">
+    <value>Dispositivo</value>
+  </data>
+  <data name="SettingsHandShakeComboBox.PlaceholderText" xml:space="preserve">
+    <value>Selecione el HandShake</value>
+  </data>
+  <data name="SettingsHandShakeText.Text" xml:space="preserve">
+    <value>Hand shake</value>
+  </data>
+  <data name="SettingsParityComboBox.PlaceholderText" xml:space="preserve">
+    <value>Seleccione la paridad</value>
+  </data>
+  <data name="SettingsParityText.Text" xml:space="preserve">
+    <value>Paridad</value>
+  </data>
+  <data name="SettingsStopBidCountComboBox.PlaceholderText" xml:space="preserve">
+    <value>Selecione el conteo de bits de parada</value>
+  </data>
+  <data name="SettingsStopBitCountText.Text" xml:space="preserve">
+    <value>Conteo de bits de parada</value>
+  </data>
+  <data name="SettingsTitleDevice.Text" xml:space="preserve">
+    <value>Configuracion puerto serial</value>
+  </data>
   <data name="StatusApplicationDialog" xml:space="preserve">
     <value>Estado de la aplicacion</value>
-  </data>
-  <data name="Test" xml:space="preserve">
-    <value>Aplicacion Iniciada</value>
-    <comment>Mensaje inicial cuando se inicia la aplicacion</comment>
   </data>
 </root>
