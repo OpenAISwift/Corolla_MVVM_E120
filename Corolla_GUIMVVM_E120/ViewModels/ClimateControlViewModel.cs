@@ -20,7 +20,7 @@ namespace Corolla_GUIMVVM_E120.ViewModels
 
             _serialDeviceService.InitDeviceAsync();
 
-            Device.DeviceName = "1";
+            Device.Name = "1";
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs args)
