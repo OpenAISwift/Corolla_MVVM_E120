@@ -28,7 +28,7 @@
                             <TextBlock x:Uid="SettingsDeviceText" />
                             <TextBlock Text=" = "/> 
                             <TextBlock Margin="5,0,0,0" 
-                                       Text="{x:Bind Settings.DeviceLocalData}"/>
+                                       Text="{x:Bind Settings.localDataDevice.Name}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0">
@@ -37,7 +37,7 @@
                                 ItemsSource="{x:Bind Settings.ListOfDevices}"
                                 SelectedValuePath="DeviceName"
                                 DisplayMemberPath="DeviceName"
-                                SelectedValue="{x:Bind Settings.DeviceSelect,Mode=TwoWay}">
+                                SelectedValue="{x:Bind Settings.selectDevice.Name ,Mode=TwoWay}">
                             </ComboBox>
                         </StackPanel>
                     </StackPanel>
@@ -47,14 +47,14 @@
                             <TextBlock x:Uid="SettingsBaudRateText"/>
                             <TextBlock Text=" =" />
                             <TextBlock Margin="5,0,0,0"
-                                       Text="{x:Bind Settings.BaudRateLocalData}"/>
+                                       Text="{x:Bind Settings.localDataDevice.BaudRate}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0">
                             <ComboBox
                                 x:Uid="SettingsBaudRateComboBox"
                                 ItemsSource="{x:Bind Settings.ListOfBaudRate}"
-                                SelectedItem="{x:Bind Settings.BaudRateSelect,Mode=TwoWay}"/>
+                                SelectedItem="{x:Bind Settings.selectDevice.BaudRate, Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
 
@@ -64,14 +64,14 @@
                             <TextBlock x:Uid="SettingsParityText"/>
                             <TextBlock Text=" =" />
                             <TextBlock Margin="5,0,0,0"
-                                       Text="{x:Bind Settings.ParityLocalData}"/>
+                                       Text="{x:Bind Settings.localDataDevice.Parity}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0" >
                             <ComboBox 
                                 x:Uid="SettingsParityComboBox"
                                 ItemsSource="{x:Bind Settings.ListOfParity}"
-                                SelectedItem="{x:Bind Settings.ParitySelect, Mode=TwoWay}"/>
+                                SelectedItem="{x:Bind Settings.selectDevice.Parity, Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical"
@@ -80,14 +80,14 @@
                             <TextBlock x:Uid="SettingsStopBitCountText"/>
                             <TextBlock Text=" =" />
                             <TextBlock Margin="5,0,0,0"
-                                       Text="{x:Bind Settings.StopBitLocalData}"/>
+                                       Text="{x:Bind Settings.localDataDevice.StopBit}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0">
                             <ComboBox 
                                 x:Uid="SettingsStopBidCountComboBox"
                                 ItemsSource="{x:Bind Settings.ListOfStopBit}"
-                                SelectedItem="{x:Bind Settings.StopBitSelect,Mode=TwoWay}"/>
+                                SelectedItem="{x:Bind Settings.selectDevice.StopBit,Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical"
@@ -96,14 +96,14 @@
                             <TextBlock x:Uid="SettingsHandShakeText"/>
                             <TextBlock Text=" = "/>
                             <TextBlock Margin="5,0,0,0"
-                                       Text="{x:Bind Settings.HandShakeLocalData}"/>
+                                       Text="{x:Bind Settings.localDataDevice.HandShake}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0">
                             <ComboBox
                                 x:Uid="SettingsHandShakeComboBox"
                                 ItemsSource="{Binding ListOfHandShake}"
-                                SelectedItem="{x:Bind Settings.HandShakeSelect , Mode=TwoWay}"/>
+                                SelectedItem="{x:Bind Settings.selectDevice.HandShake , Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical"
@@ -112,14 +112,14 @@
                             <TextBlock x:Uid="SettingsDataBitText"/>
                             <TextBlock Text=" = " />
                             <TextBlock Margin="5,0,0,0" 
-                                       Text="{x:Bind Settings.DataBitsLocalData}"/>
+                                       Text="{x:Bind Settings.localDataDevice.DataBits}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0">
                             <ComboBox 
                                 x:Uid="SettingsDataBitsComboBox"
                                 ItemsSource="{Binding ListOfDataBits}"
-                                SelectedItem="{x:Bind Settings.DataBitsSelect, Mode=TwoWay}"/>
+                                SelectedItem="{x:Bind Settings.selectDevice.DataBits, Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" 
