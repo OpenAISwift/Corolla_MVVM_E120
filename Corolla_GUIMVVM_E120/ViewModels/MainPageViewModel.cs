@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class MainPageViewModel : ViewModelPageBase
     {
         IDialogService _dialogService;
         ILoaderService _loaderService;

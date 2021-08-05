@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
 {
-    public class ClockViewModel : ViewModelBase
+    public class ClockViewModel : ViewModelPageBase
     {
         private DispatcherTimer dispatcherTimer;
         private string _hour = null;

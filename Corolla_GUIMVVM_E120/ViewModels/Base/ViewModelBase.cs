@@ -17,24 +17,6 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
 
         #endregion
 
-
-        private Frame appFrame;
-        public Frame AppFrame
-        {
-            get { return appFrame; }
-        }
-
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get => isBusy;
-            set => RaisePropertyChanged(ref isBusy, value);
-        }
-
-        public abstract Task OnNavigatedFrom(NavigationEventArgs args);
-        public abstract Task OnNavigatedTo(NavigationEventArgs args);
-
-
         /// <summary>
         /// Comprueba si una propiedad ya coincide con un valor deseado.  
         /// Establece la propiedad y notifica a los oyentes sólo cuando es necesario.
@@ -67,11 +49,6 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        internal void SetAppFrame(Frame viewFrame)
-        {
-            appFrame = viewFrame;
         }
     }
 }

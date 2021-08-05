@@ -21,7 +21,7 @@ using Windows.ApplicationModel.Core;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
 {
-    public class SettingsViewModel : ViewModelBase
+    public class SettingsViewModel : ViewModelPageBase
     {
         #region Variables
 
