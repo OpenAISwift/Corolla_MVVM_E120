@@ -1,4 +1,5 @@
 ﻿using Corolla_GUIMVVM_E120.Contants;
+
 using System;
 using Windows.ApplicationModel.Resources;
 using Windows.Storage;
@@ -7,8 +8,10 @@ namespace Corolla_GUIMVVM_E120.Services.LocalAppDataService
 {
     public class LocalAppDataService : ILocalAppDataService
     {
+        #region Variables
         private readonly ResourceLoader loader;
         private readonly ApplicationDataContainer localSettings;
+        #endregion
 
         public LocalAppDataService()
         {
@@ -90,8 +93,6 @@ namespace Corolla_GUIMVVM_E120.Services.LocalAppDataService
             string nameContainer = Enum.GetName(typeof(LocalDataType), localDataType);
             localSettings.Containers[nameContainer].Values[key] = value;
         }
-
-       
 
         /// <summary>
         /// Elimina un contenedor

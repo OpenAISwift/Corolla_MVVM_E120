@@ -26,7 +26,6 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         #region Variables
 
         #region Declaracion de Interfaces
-        private IDialogService _dialogService;
         private ILoaderService _loaderService;
         private ILocalAppDataService _localAppDataService;
         #endregion
@@ -88,9 +87,8 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         }
         #endregion
 
-        public SettingsViewModel(IDialogService dialogService, ILoaderService loaderService, ILocalAppDataService localAppDataService)
+        public SettingsViewModel(ILoaderService loaderService, ILocalAppDataService localAppDataService)
         {
-            _dialogService = dialogService;
             _loaderService = loaderService;
             _localAppDataService = localAppDataService;
 
@@ -216,7 +214,7 @@ namespace Corolla_GUIMVVM_E120.ViewModels
                     ["BaudRate"] = (uint)115200,
                 };
                 _localAppDataService.SetCompositeLocalAppData(LocalDataType.DeviceData, composite);
-                localDataDevice.Name = _loaderService.GetString("MessageNotSelected");
+                localDataDevice.Name = "";
                 localDataDevice.Parity = "Even";
                 localDataDevice.StopBit = "One";
                 localDataDevice.HandShake = "None";
