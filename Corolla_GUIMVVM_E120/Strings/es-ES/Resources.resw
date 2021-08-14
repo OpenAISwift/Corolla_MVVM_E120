@@ -123,6 +123,9 @@
   <data name="ClimateControl.Content" xml:space="preserve">
     <value>Climatizador </value>
   </data>
+  <data name="DeviceNotConfigured" xml:space="preserve">
+    <value>Dispositivo no configurado</value>
+  </data>
   <data name="ErrorApplicationDialog" xml:space="preserve">
     <value>Error de aplicación</value>
   </data>
