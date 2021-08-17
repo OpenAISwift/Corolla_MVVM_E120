@@ -32,7 +32,6 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 
         public event EventHandler NewDataDevice;
         #endregion
-
         #region Declaracion de clases
         private DeviceModel localDeviceModel;
 
@@ -58,27 +57,32 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         /// </summary>
         private string deviceSelector;
 
-        private bool changeDavice = false;
-        private bool deviceIdUpdate = false;
-        private bool deviceIsConected = false;
+        private bool changedSettings = false;
         private bool deviceIsDetected = false;
+        private bool watcherSuspended = false;
+        private bool watcherStarted = false;
 
-        private bool watcherSuspended;
-        private bool watcherStarted;
+        #endregion
 
+        #region Propiedades
+        private bool IsDeviceConnected
+        {
+            get
+            {
+                return (device != null);
+            }
+        }
         #endregion
 
         #region Metodos
 
-        /// <summary>
-        /// Constructor de la clase
-        /// </summary>
         public SerialDeviceService()
         {
             localDeviceModel = new DeviceModel();
-        }
 
-        #region ApplicationEvents
+            watcherStarted = false;
+            watcherSuspended = false;
+        }
 
         /// <summary>
         /// Registro de eventos de suspensión/reanudación de la aplicación. 
@@ -102,10 +106,31 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         private void UnregisterFromAppEvents()
         {
             Application.Current.Suspending -= appSuspendEventHandler;
-            appSuspendEventHandler = null;
-
             Application.Current.Resuming -= appResumeEventHandler;
+
+            appSuspendEventHandler = null;
             appResumeEventHandler = null;
+        }
+
+        /// <summary>
+        /// Registro para los eventos Added y Removed.
+        /// Tenga en cuenta que, al desconectar el dispositivo, éste puede ser cerrado por el sistema
+        /// antes de que se invoque la devolución de llamada OnDeviceRemoved.
+        /// <summary>
+        private void RegisterForDeviceWatcherEvents()
+        {
+            deviceAddedEventHandler = new TypedEventHandler<DeviceWatcher, DeviceInformation>(OnDeviceAdded);
+            deviceRemovedEventHandler = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(OnDeviceRemoved);
+
+            deviceWatcher.Added += deviceAddedEventHandler;
+            deviceWatcher.Removed += deviceRemovedEventHandler;
+        }
+
+        private void UnregisterFromDeviceAccessStatusChange()
+        {
+            deviceAccessInformation.AccessChanged -= deviceAccessEventHandler;
+
+            deviceAccessEventHandler = null;
         }
 
         /// <summary>
@@ -152,7 +177,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         /// <summary>
         /// <param name="sender"></param>
         /// <param name="arg"></param>
-        private void OnAppResume(object sender, Object args)
+        private void OnAppResume(object sender, object args)
         {
             if (watcherSuspended)
             {
@@ -160,279 +185,42 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                 StartDeviceWatcher();
             }
         }
-        #endregion
 
-
-        public void InitDeviceAsync(DeviceModel device)
+        public void DeviceCheck(DeviceModel device)
         {
             if (device != null)
             {
-                if (deviceIsConected)
+                if (IsDeviceConnected)
                 {
                     if (device.Name != localDeviceModel.Name)
                     {
-                        changeDavice = true;
+                        CloseDevice();
                     }
-                    deviceIdUpdate = localDeviceModel.Equals(device);
+                    if (localDeviceModel.Equals(device))
+                    {
+                        changedSettings = true;
+                    }
                 }
                 localDeviceModel = device;
+                if(changedSettings)
+                {
+                    UpdateDeviceParameters();
+
+                    changedSettings = false;
+                }
+                DeviceCheck();
             }
-            CheckConnectionDevice();
         }
 
-        private async void CheckConnectionDevice()
+        private async void DeviceCheck()
         {
-            if (changeDavice)
-            {
-                if (deviceIsConected)
-                {
-                    CloseDevice();
-                }
-                changeDavice = false;
-            }
-
             deviceIsDetected = await FindLocalDevice();
 
-            if (deviceIsConected != true && deviceIsDetected)
+            if (IsDeviceConnected != true && deviceIsDetected)
             {
-                deviceIsConected = await OpenDeviceAsync();
-                if (deviceIsConected)
-                {
-                    ReadDataPort();
-                }
+                await OpenDeviceAsync();
             }
-        }
-
-        private async void ReadDataPort()
-        {
-            ReadCancellationTokenSource = new CancellationTokenSource();
-            WriteCancellationTokenSource = new CancellationTokenSource();
-            while (!ReadCancellationTokenSource.IsCancellationRequested)
-            {
-                await Listen();
-            }
-        }
-
-        private async Task Listen()
-        {
-            try
-            {
-                DataReaderObject = new DataReader(device.InputStream);
-                await ReadAsync(ReadCancellationTokenSource.Token);
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception.ToString());
-            }
-            finally
-            {
-                DataReaderObject.DetachStream();
-                DataReaderObject = null;
-            }
-        }
-
-        private async Task ReadAsync(CancellationToken cancellationToken)
-        {
-            Task<uint> loadAsyncTask;
-
-            uint ReadBufferLength = 256;
-
-            DataReaderObject.InputStreamOptions = InputStreamOptions.Partial;
-            loadAsyncTask = DataReaderObject.LoadAsync(ReadBufferLength).AsTask(cancellationToken);
-
-            uint bytesRead = await loadAsyncTask;
-
-            if (bytesRead > 0)
-            {
-                string strFromPort = DataReaderObject.ReadString(bytesRead);
-                NewDataDevice(strFromPort, null);
-                Debug.WriteLine("Mensaje:" + strFromPort);
-            }
-        }
-
-        public async void WriteToPort(string DataDevice)
-        {
-            if (deviceIsConected)
-            {
-                try
-                {
-                    DataWriteObject = new DataWriter(device.OutputStream);
-                    await WriteAsync(WriteCancellationTokenSource.Token, DataDevice);
-                }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(exception.ToString());
-                }
-                finally
-                {
-                    DataWriteObject.DetachStream();
-                    DataWriteObject = null;
-                }
-            }
-        }
-
-        private async Task WriteAsync(CancellationToken cancellationToken, string dataSentDevice)
-        {
-
-            Task<uint> storeAsyncTask;
-
-            if (dataSentDevice.Length != 0)
-            {
-                DataWriteObject.WriteString(dataSentDevice);
-                lock (WriteCancelLock)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    // Cancellation Token will be used so we can stop the task operation explicitly
-                    // The completion function should still be called so that we can properly handle a canceled task
-                    storeAsyncTask = DataWriteObject.StoreAsync().AsTask(cancellationToken);
-                }
-                await storeAsyncTask;
-            }
-        }
-
-        /// <summary>
-        /// Este método abre el dispositivo utilizando la API Serial de WinRT. 
-        /// Después de abrir el dispositivo, guarda el dispositivo para que pueda ser utilizado en otros escenarios.
-        /// Es importante que la llamada FromIdAsync se haga en el hilo de la UI porque el
-        /// prompt de consentimiento sólo puede ser mostrado en el hilo de la interfaz de usuario.
-        /// Este método se utiliza para reabrir el dispositivo después de que el dispositivo se
-        /// reconecta al ordenador y cuando la aplicación se reanuda.
-        /// </summary>
-        public async Task<bool> OpenDeviceAsync()
-        {
-            device = await SerialDevice.FromIdAsync(deviceInformation.Id);
-            //NotifyType notificationStatus;
-            //string notificationMessage = null;
-
-            bool successfullyOpenedDevice;
-            if (device != null)
-            {
-                successfullyOpenedDevice = true;
-                //notificationStatus = NotifyType.StatusMessage;
-                device.BaudRate = localDeviceModel.BaudRate;
-                device.DataBits = localDeviceModel.DataBits;
-
-                /////////////////////////////////////////////
-                device.ReadTimeout = TimeSpan.FromMilliseconds(100);
-                device.WriteTimeout = TimeSpan.FromMilliseconds(100);
-
-                device.IsDataTerminalReadyEnabled = true;
-                device.Parity = SerialParity.None;
-                device.StopBits = SerialStopBitCount.One;
-                device.DataBits = 8;
-                device.Handshake = SerialHandshake.None;
-
-                //Notificar a la llamada de retorno registrada que el dispositivo ha sido abierto
-                if (deviceConnectedCallback != null)
-                {
-                    deviceConnectedCallback(this, deviceInformation);
-                }
-
-                if (appSuspendEventHandler == null || appResumeEventHandler == null)
-                {
-                    RegisterForAppEvents();
-                }
-
-                // Regístrese para el evento DeviceAccessInformation.AccessChanged y reaccione a cualquier cambio en el
-                // acceso del usuario después de la apertura del mango del dispositivo.
-                //if (deviceAccessEventHandler == null)
-                //{
-                //    RegisterForDeviceAccessStatusChange();
-                //}
-
-                // Crear y registrar los eventos del observador de dispositivos para el dispositivo
-                // que se va a abrir a menos que estemos reabriendo el dispositivo
-                if (deviceWatcher == null)
-                {
-                    deviceWatcher = DeviceInformation.CreateWatcher(deviceSelector);
-                    RegisterForDeviceWatcherEvents();
-                }
-
-                if (!watcherStarted)
-                {
-                    // Inicie el observador de dispositivos después de que nos hayamos asegurado
-                    // de que el dispositivo está abierto.
-                    StartDeviceWatcher();
-                }
-            }
-            else
-            {
-                successfullyOpenedDevice = false;
-                //notificationStatus = NotifyType.ErrorMessage;
-                //var deviceAccessStatus = DeviceAccessInformation.CreateFromId(LocalApplicationData.LocalData.DeviceId).CurrentStatus;
-
-                //if (deviceAccessStatus == DeviceAccessStatus.DeniedByUser)
-                //{
-                //    notificationMessage = "Acceso al dispositivo bloquedo por el usuario";
-                //}
-                //else
-                //{
-                //    notificationMessage = deviceAccessStatus == DeviceAccessStatus.DeniedBySystem
-                //        ? "Acceso al dispositivo bloquedo por el sistema"
-                //        : "Error desconocido, posiblemente abierto por otra aplicación";
-                //}
-                //_ = MainPage.Current.NotifyUser(notificationMessage, notificationStatus);
-            }
-            return successfullyOpenedDevice;
-        }
-
-        /// <summary>
-        /// Registro para los eventos Added y Removed.
-        /// Tenga en cuenta que, al desconectar el dispositivo, éste puede ser cerrado por el sistema
-        /// antes de que se invoque la devolución de llamada OnDeviceRemoved.
-        /// <summary>
-        private void RegisterForDeviceWatcherEvents()
-        {
-            deviceAddedEventHandler = new TypedEventHandler<DeviceWatcher, DeviceInformation>(OnDeviceAdded);
-
-            deviceRemovedEventHandler = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(OnDeviceRemoved);
-
-            deviceWatcher.Added += deviceAddedEventHandler;
-
-            deviceWatcher.Removed += deviceRemovedEventHandler;
-        }
-
-        /// <summary>
-        /// Cierra el dispositivo que se abre para que todas las operaciones pendientes 
-        /// se cancelen correctamente.
-        /// <summary>
-        /// <param name="sender"></param>
-        /// <param name="deviceInformationUpdate"></param>
-        private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate deviceInformationUpdate)
-        {
-            if (deviceIsConected && (deviceInformationUpdate.Id == deviceInformation.Id))
-            {
-                // Las principales razones para cerrar el dispositivo explícitamente es para limpiar los recursos,
-                // para manejar adecuadamente los errores y dejar de hablar con el dispositivo desconectado.
-                CloseCurrentlyConnectedDevice();
-            }
-        }
-
-        /// <summary>
-        /// Abre el dispositivo que el usuario quería abrir si aún no se ha abierto y la reconexión automática está activada.
-        /// <summary>
-        /// <param name="sender"></param>
-        /// <param name="deviceInfo"></param>
-        private async void OnDeviceAdded(DeviceWatcher sender, DeviceInformation deviceInfo)
-        {
-            if ((deviceInformation != null) && (deviceInfo.Id == deviceInformation.Id) && !deviceIsConected && localDeviceModel.AutoReconect)
-            {
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
-                {
-                    deviceIsConected = await OpenDeviceAsync();
-                });
-
-                //await rootPage.Dispatcher.RunAsync(
-                //    CoreDispatcherPriority.Normal,
-                //    new DispatchedHandler(async () =>
-                //    {
-                //        // await OpenDeviceAsync(deviceInformation, deviceSelector);
-                //        await OpenDeviceAsync();
-                //        // Cualquier intialización del dispositivo específico de la aplicación debe hacerse
-                //        // aquí porque no sabemos el estado del dispositivo cuando se reenumera.
-                //    }));
-            }
+            
         }
 
         private async Task<bool> FindLocalDevice()
@@ -458,6 +246,210 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         }
 
         /// <summary>
+        /// Este método abre el dispositivo utilizando la API Serial de WinRT. 
+        /// Después de abrir el dispositivo, guarda el dispositivo para que pueda ser utilizado en otros escenarios.
+        /// Es importante que la llamada FromIdAsync se haga en el hilo de la UI porque el
+        /// prompt de consentimiento sólo puede ser mostrado en el hilo de la interfaz de usuario.
+        /// Este método se utiliza para reabrir el dispositivo después de que el dispositivo se
+        /// reconecta al ordenador y cuando la aplicación se reanuda.
+        /// </summary>
+        public async Task<bool> OpenDeviceAsync()
+        {
+            device = await SerialDevice.FromIdAsync(deviceInformation.Id);
+
+            bool successfullyOpenedDevice = false;
+
+            if (device != null)
+            {
+                UpdateDeviceParameters();
+
+                //Notificar a la llamada de retorno registrada que el dispositivo ha sido abierto
+                deviceConnectedCallback?.Invoke(this, deviceInformation); 
+                if (appSuspendEventHandler == null || appResumeEventHandler == null)
+                {
+                    RegisterForAppEvents();
+                }
+                // Crear y registrar los eventos del observador de dispositivos para el dispositivo
+                // que se va a abrir a menos que estemos reabriendo el dispositivo
+                if (deviceWatcher == null)
+                {
+                    deviceWatcher = DeviceInformation.CreateWatcher(deviceSelector);
+                    RegisterForDeviceWatcherEvents();
+                }
+                if (!watcherStarted)
+                {
+                    // Inicie el observador de dispositivos después de que nos hayamos asegurado
+                    // de que el dispositivo está abierto.
+                    StartDeviceWatcher();
+                }
+                if (IsDeviceConnected)
+                {
+                    ReadDataPort();
+                }
+
+                successfullyOpenedDevice = true;
+            }
+            else
+            {
+                successfullyOpenedDevice = false;
+                //notificationStatus = NotifyType.ErrorMessage;
+                //var deviceAccessStatus = DeviceAccessInformation.CreateFromId(LocalApplicationData.LocalData.DeviceId).CurrentStatus;
+
+                //if (deviceAccessStatus == DeviceAccessStatus.DeniedByUser)
+                //{
+                //    notificationMessage = "Acceso al dispositivo bloquedo por el usuario";
+                //}
+                //else
+                //{
+                //    notificationMessage = deviceAccessStatus == DeviceAccessStatus.DeniedBySystem
+                //        ? "Acceso al dispositivo bloquedo por el sistema"
+                //        : "Error desconocido, posiblemente abierto por otra aplicación";
+                //}
+                //_ = MainPage.Current.NotifyUser(notificationMessage, notificationStatus);
+            }
+            return successfullyOpenedDevice;
+        }
+
+        private void UpdateDeviceParameters()
+        {
+            device.BaudRate = localDeviceModel.BaudRate;
+            device.DataBits = localDeviceModel.DataBits;
+
+            device.ReadTimeout = TimeSpan.FromMilliseconds(100);
+            device.WriteTimeout = TimeSpan.FromMilliseconds(100);
+            device.IsDataTerminalReadyEnabled = true;
+            device.IsRequestToSendEnabled = true;
+            device.Parity = SerialParity.None;
+            device.StopBits = SerialStopBitCount.One;
+            device.DataBits = 8;
+            device.Handshake = SerialHandshake.None;
+
+            //deviceIsUpdate = false;
+        }
+
+        private async void ReadDataPort()
+        {
+            ReadCancellationTokenSource = new CancellationTokenSource();
+            WriteCancellationTokenSource = new CancellationTokenSource();
+            while (!ReadCancellationTokenSource.IsCancellationRequested)
+            {
+                await Listen();
+            }
+        }
+
+        private async Task Listen()
+        {
+            if (IsDeviceConnected)
+            {
+                try
+                {
+                    DataReaderObject = new DataReader(device.InputStream);
+                    await ReadAsync(ReadCancellationTokenSource.Token);
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception.ToString());
+                }
+                finally
+                {
+                    DataReaderObject.DetachStream();
+                    DataReaderObject = null;
+                }
+            }
+        }
+
+        private async Task ReadAsync(CancellationToken cancellationToken)
+        {
+            Task<uint> loadAsyncTask;
+            uint ReadBufferLength = 256;
+            DataReaderObject.InputStreamOptions = InputStreamOptions.None;
+
+            loadAsyncTask = DataReaderObject.LoadAsync(ReadBufferLength).AsTask(cancellationToken);
+            uint bytesRead = await loadAsyncTask;
+
+            if (bytesRead > 0)
+            {
+                string strFromPort = DataReaderObject.ReadString(bytesRead);
+                NewDataDevice(strFromPort, null);
+                Debug.WriteLine("Mensaje:" + strFromPort);
+            }
+        }
+
+        public async void WriteToPort(string DataDevice)
+        {
+            if (IsDeviceConnected)
+            {
+                try
+                {
+                    DataWriteObject = new DataWriter(device.OutputStream);
+                    await WriteAsync(WriteCancellationTokenSource.Token, DataDevice);
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception.ToString());
+                }
+                finally
+                {
+                    DataWriteObject.DetachStream();
+                    DataWriteObject = null;
+                }
+            }
+        }
+
+        private async Task WriteAsync(CancellationToken cancellationToken, string dataSentDevice)
+        {
+            Task<uint> storeAsyncTask;
+
+            if (dataSentDevice.Length != 0)
+            {
+                DataWriteObject.WriteString(dataSentDevice);
+                lock (WriteCancelLock)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    // Cancellation Token will be used so we can stop the task operation explicitly
+                    // The completion function should still be called so that we can properly handle a canceled task
+                    storeAsyncTask = DataWriteObject.StoreAsync().AsTask(cancellationToken);
+                }
+                await storeAsyncTask;
+            }
+        }
+
+        /// <summary>
+        /// Cierra el dispositivo que se abre para que todas las operaciones pendientes 
+        /// se cancelen correctamente.
+        /// <summary>
+        /// <param name="sender"></param>
+        /// <param name="deviceInformationUpdate"></param>
+        private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate deviceInformationUpdate)
+        {
+            if (IsDeviceConnected && (deviceInformationUpdate.Id == deviceInformation.Id))
+            {
+                // Las principales razones para cerrar el dispositivo explícitamente es para limpiar los recursos,
+                // para manejar adecuadamente los errores y dejar de hablar con el dispositivo desconectado.
+                CloseCurrentlyConnectedDevice();
+            }
+        }
+
+        /// <summary>
+        /// Abre el dispositivo que el usuario quería abrir si aún no se ha abierto y la reconexión automática está activada.
+        /// <summary>
+        /// <param name="sender"></param>
+        /// <param name="deviceInfo"></param>
+        private async void OnDeviceAdded(DeviceWatcher sender, DeviceInformation deviceInfo)
+        {
+            if ((deviceInformation != null) && (deviceInfo.Id == deviceInformation.Id) && !IsDeviceConnected && localDeviceModel.AutoReconect)
+            {
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                {
+                    await OpenDeviceAsync();
+                });
+            }
+        }
+
+        
+
+        /// <summary>
         /// Cierra el dispositivo, detiene el observador del dispositivo, 
         /// deja de escuchar los eventos de la aplicación, 
         /// y restablece el estado del objeto a antes de que un dispositivo
@@ -465,8 +457,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         /// </summary>
         public void CloseDevice()
         {
-
-            if (deviceIsConected)
+            if (IsDeviceConnected)
             {
                 CloseCurrentlyConnectedDevice();
             }
@@ -499,9 +490,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
             deviceSelector = null;
 
             deviceConnectedCallback = null;
-            deviceCloseCallback = null;
-
-            deviceIsConected = false;
+            deviceCloseCallback = null;            
         }
 
         private void UnregisterFromDeviceWatcherEvents()
@@ -535,28 +524,19 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 
                 // Cierra el dispositivo
                 device.Dispose();
-
                 device = null;
-
             }
-        }
-
-        private void UnregisterFromDeviceAccessStatusChange()
-        {
-            deviceAccessInformation.AccessChanged -= deviceAccessEventHandler;
-
-            deviceAccessEventHandler = null;
         }
 
         private void StartDeviceWatcher()
         {
-            watcherStarted = true;
-
             if ((deviceWatcher.Status != DeviceWatcherStatus.Started)
                 && (deviceWatcher.Status != DeviceWatcherStatus.EnumerationCompleted))
             {
                 deviceWatcher.Start();
             }
+
+            watcherStarted = true;
         }
 
         private void StopDeviceWatcher()
@@ -572,12 +552,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 
         private void CancellAllTasks()
         {
-            CancelReadTask();
-            CancelWriteTask();
-        }
-
-        public void CancelReadTask()
-        {
+            #region Cancelacion de tarea de lectura
             lock (ReadCancelLock)
             {
                 if (ReadCancellationTokenSource != null)
@@ -588,10 +563,9 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                     }
                 }
             }
-        }
+            #endregion
 
-        private void CancelWriteTask()
-        {
+            #region Cancelacion de tarea de Escritura
             lock (WriteCancelLock)
             {
                 if (WriteCancellationTokenSource != null)
@@ -602,6 +576,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                     }
                 }
             }
+            #endregion
         }
         #endregion
     }

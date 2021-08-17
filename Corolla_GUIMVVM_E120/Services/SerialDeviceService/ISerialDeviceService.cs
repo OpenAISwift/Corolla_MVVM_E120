@@ -5,7 +5,13 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 {
     public interface ISerialDeviceService
     {
-        void InitDeviceAsync(DeviceModel device);
-        event EventHandler NewDataDevice; 
+        /// <summary>
+        /// Comprueba la conexión con el dispositivo serial 
+        /// </summary>
+        /// <param name="device"></param>
+        void DeviceCheck(DeviceModel device);
+        
+        event EventHandler NewDataDevice;
+        void WriteToPort(string DataDevice);
     }
 }
