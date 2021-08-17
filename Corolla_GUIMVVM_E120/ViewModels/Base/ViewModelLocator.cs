@@ -28,11 +28,8 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
         }
 
         public MainPageViewModel MainPageViewModel => _container.Resolve<MainPageViewModel>();
-
         public SettingsViewModel SettingsViewModel => _container.Resolve<SettingsViewModel>();
-
         public ClimateControlViewModel ClimateControlViewModel => _container.Resolve<ClimateControlViewModel>();
-
         public ClockViewModel ClockViewModel => _container.Resolve<ClockViewModel>();
     }
 }
