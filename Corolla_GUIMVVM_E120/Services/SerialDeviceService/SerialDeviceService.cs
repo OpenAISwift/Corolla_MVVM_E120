@@ -352,8 +352,11 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                 }
                 finally
                 {
-                    DataReaderObject.DetachStream();
-                    DataReaderObject = null;
+                    if (DataReaderObject != null)
+                    {
+                        DataReaderObject.DetachStream();
+                        DataReaderObject = null;
+                    }
                 }
             }
         }
@@ -371,7 +374,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
             {
                 string strFromPort = DataReaderObject.ReadString(bytesRead);
                 NewDataDevice(strFromPort, null);
-                Debug.WriteLine("Mensaje:" + strFromPort);
+                Debug.WriteLine("Recivido:" + strFromPort);
             }
         }
 
@@ -390,8 +393,11 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                 }
                 finally
                 {
-                    DataWriteObject.DetachStream();
-                    DataWriteObject = null;
+                    if (DataWriteObject != null)
+                    {
+                        DataWriteObject.DetachStream();
+                        DataWriteObject = null;
+                    }
                 }
             }
         }
@@ -402,6 +408,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 
             if (dataSentDevice.Length != 0)
             {
+                Debug.WriteLine("Enviado:" + dataSentDevice);
                 DataWriteObject.WriteString(dataSentDevice);
                 lock (WriteCancelLock)
                 {
