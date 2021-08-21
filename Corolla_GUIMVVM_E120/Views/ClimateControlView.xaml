@@ -49,8 +49,8 @@
                             Margin="10 0">
                         <ToggleButton Style="{ThemeResource CorollaE120_Panel}"
                                   Command="{Binding RelayC_DefrosterFront}"
-                                  IsChecked="{x:Bind ClimateControl.control.ChekedDefrosterFront,Mode=TwoWay}"
-                                  IsEnabled="{x:Bind ClimateControl.control.EnabledDefrosterFront}">
+                                  IsChecked="{x:Bind ClimateControl.ChekedDefrosterFront, Mode=TwoWay}"
+                                  IsEnabled="{x:Bind ClimateControl.EnabledDefrosterFront, Mode=OneWay}">
                             <Viewbox>
                                 <PathIcon Data="M15,23C14.7,23 14.5,22.9 14.3,22.7C13.9,22.3 14,21.7 14.4,21.3V21.3C14.9,20.9 16.1,19.5 16.1,18.4C16.1,17.8 15.7,17.2 15.3,16.5C14.8,15.7 14.1,14.7 14.1,13.5C14.1,11.2 15.4,10.3 15.6,10.2C16.1,9.9 16.7,10.1 17,10.5C17.3,11 17.1,11.6 16.7,11.9V11.9C16.7,11.9 16.2,12.3 16.2,13.5C16.2,14.1 16.6,14.7 17,15.4C17.5,16.2 18.2,17.2 18.2,18.4C18.2,20.6 16.1,22.6 15.9,22.8C15.5,22.9 15.2,23 15,23M11.7,22.7C11.9,22.5 14,20.5 14,18.3C14,17.1 13.4,16.1 12.8,15.3C12.4,14.6 12,14 12,13.4C12,12.2 12.5,11.8 12.5,11.8V11.8C13,11.5 13.1,10.9 12.8,10.4C12.5,9.9 11.9,9.8 11.4,10.1C11.2,10.2 9.9,11.1 9.9,13.4C9.9,14.6 10.5,15.6 11.1,16.4C11.5,17.1 11.9,17.7 11.9,18.3C11.9,19.4 10.7,20.8 10.2,21.2V21.2C9.8,21.6 9.8,22.2 10.1,22.6C10.3,22.8 10.6,22.9 10.8,22.9C11.2,23 11.5,22.9 11.7,22.7M7.7,22.7C7.9,22.5 10,20.5 10,18.3C10,17.1 9.4,16.1 8.8,15.3C8.4,14.7 8,14.1 8,13.4C8,12.2 8.5,11.8 8.5,11.8V11.8C9,11.5 9.1,10.9 8.8,10.4C8.6,10 7.9,9.9 7.5,10.1C7.3,10.2 6,11.1 6,13.4C6,14.6 6.6,15.6 7.2,16.4C7.6,17.1 8,17.7 8,18.3C8,19.4 6.8,20.8 6.3,21.2V21.2C5.9,21.6 5.9,22.2 6.2,22.6C6.5,22.9 6.7,23 7,23C7.2,23 7.5,22.9 7.7,22.7M12,3C9.4,3 1,3.3 1,7C1,9.4 2.2,15.4 2.8,18H4L4.8,18H5V16H4.4C3.8,13.1 3,8.8 3,7C3,6 7.4,5 12,5C16.6,5 21,6 21,7C21,8.8 20.2,13.1 19.6,16H19V18H19.2L20,18H21.2C21.8,15.4 23,9.4 23,7C23,3.3 14.6,3 12,3Z"
                                       Width="24"
@@ -68,8 +68,8 @@
                             Margin="10 0">
                         <ToggleButton Style="{ThemeResource CorollaE120_Panel}"
                                   Command="{Binding RelayC_DefrostRear}"
-                                  IsChecked="{x:Bind ClimateControl.control.ChekedDefrostRear,Mode=TwoWay}"
-                                  IsEnabled="{x:Bind ClimateControl.control.EnabledDefrostRear}">
+                                  IsChecked="{x:Bind ClimateControl.ChekedDefrostRear, Mode=TwoWay}"
+                                  IsEnabled="{x:Bind ClimateControl.EnabledDefrostRear, Mode=OneWay}">
                             <Viewbox>
                                 <PathIcon Data="M10,18.3C10,20.5 7.9,22.5 7.7,22.7C7.5,22.9 7.2,23 7,23C6.7,23 6.5,22.9 6.2,22.6C5.9,22.2 5.9,21.6 6.3,21.2C6.8,20.8 8,19.4 8,18.3C8,17.7 7.6,17.1 7.2,16.4C6.6,15.6 6,14.6 6,13.4C6,11.1 7.3,10.2 7.5,10.1C7.9,9.9 8.6,10 8.8,10.4C9.1,10.9 9,11.5 8.5,11.8C8.5,11.8 8,12.2 8,13.4C8,14.1 8.4,14.7 8.8,15.3C9.4,16.1 10,17.1 10,18.3M12,13.4C12,12.2 12.5,11.8 12.5,11.8C13,11.5 13.1,10.9 12.8,10.4C12.5,9.9 11.9,9.8 11.4,10.1C11.2,10.2 9.9,11.1 9.9,13.4C9.9,14.6 10.5,15.6 11.1,16.4C11.5,17.1 11.9,17.7 11.9,18.3C11.9,19.4 10.7,20.8 10.2,21.2C9.8,21.6 9.8,22.2 10.1,22.6C10.3,22.8 10.6,22.9 10.8,22.9C11.2,23 11.5,22.9 11.7,22.7C11.9,22.5 14,20.5 14,18.3C14,17.1 13.4,16.1 12.8,15.3C12.4,14.6 12,14 12,13.4M20,3H4A2,2 0 0,0 2,5V16A2,2 0 0,0 4,18H5V16H4V5H20V16H19V18H20A2,2 0 0,0 22,16V5A2,2 0 0,0 20,3M16.2,13.5C16.2,12.3 16.7,11.9 16.7,11.9C17.1,11.6 17.3,11 17,10.5C16.7,10.1 16.1,9.9 15.6,10.2C15.4,10.3 14.1,11.2 14.1,13.5C14.1,14.7 14.8,15.7 15.3,16.5C15.7,17.2 16.1,17.8 16.1,18.4C16.1,19.5 14.9,20.9 14.4,21.3C14,21.7 13.9,22.3 14.3,22.7C14.5,22.9 14.7,23 15,23C15.2,23 15.5,22.9 15.9,22.8C16.1,22.6 18.2,20.6 18.2,18.4C18.2,17.2 17.5,16.2 17,15.4C16.6,14.7 16.2,14.1 16.2,13.5Z"
                                       Width="24"
@@ -87,8 +87,8 @@
                             Margin="10 0">
                         <ToggleButton Style="{ThemeResource CorollaE120_Panel}"
                                   Command="{Binding RelayC_Ac}"
-                                  IsChecked="{x:Bind ClimateControl.control.ChekedAc,Mode=TwoWay}"
-                                  IsEnabled="{x:Bind ClimateControl.control.EnabledAc}">
+                                  IsChecked="{x:Bind ClimateControl.ChekedAc, Mode=TwoWay}"
+                                  IsEnabled="{x:Bind ClimateControl.EnabledAc, Mode=OneWay}">
                             <Viewbox>
                                 <PathIcon Data="M20.79,13.95L18.46,14.57L16.46,13.44V10.56L18.46,9.43L20.79,10.05L21.31,8.12L19.54,7.65L20,5.88L18.07,5.36L17.45,7.69L15.45,8.82L13,7.38V5.12L14.71,3.41L13.29,2L12,3.29L10.71,2L9.29,3.41L11,5.12V7.38L8.5,8.82L6.5,7.69L5.92,5.36L4,5.88L4.47,7.65L2.7,8.12L3.22,10.05L5.55,9.43L7.55,10.56V13.45L5.55,14.58L3.22,13.96L2.7,15.89L4.47,16.36L4,18.12L5.93,18.64L6.55,16.31L8.55,15.18L11,16.62V18.88L9.29,20.59L10.71,22L12,20.71L13.29,22L14.7,20.59L13,18.88V16.62L15.5,15.17L17.5,16.3L18.12,18.63L20,18.12L19.53,16.35L21.3,15.88L20.79,13.95M9.5,10.56L12,9.11L14.5,10.56V13.44L12,14.89L9.5,13.44V10.56Z"
                                       Width="24"
@@ -106,8 +106,8 @@
                             Margin="10 0">
                         <ToggleButton Style="{ThemeResource CorollaE120_Panel}"
                                   Command="{Binding RelayC_Auto}"
-                                  IsChecked="{x:Bind ClimateControl.control.ChekedAuto,Mode=TwoWay}"
-                                  IsEnabled="{x:Bind ClimateControl.control.EnabledAuto}">
+                                  IsChecked="{x:Bind ClimateControl.ChekedAuto,Mode=TwoWay}"
+                                  IsEnabled="{x:Bind ClimateControl.EnabledAuto, Mode=OneWay}">
                             <TextBlock Text="AUTO"
                                    FontSize="28"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -126,8 +126,8 @@
                                   Height="85" Width="85"
                                   HorizontalAlignment="Center"
                                   Command="{Binding RelayC_AirMode}"
-                                  IsChecked="{x:Bind ClimateControl.control.ChekedAirMode,Mode=TwoWay}"
-                                  IsEnabled="{x:Bind ClimateControl.control.EnabledAirMode}">
+                                  IsChecked="{x:Bind ClimateControl.ChekedAirMode,Mode=TwoWay}"
+                                  IsEnabled="{x:Bind ClimateControl.EnabledAirMode, Mode=OneWay}">
                         </ToggleButton>
                         <TextBlock Text="AIR MODE"
                                FontSize="25"
@@ -140,8 +140,8 @@
                             Margin="10 0">
                         <ToggleButton Style="{ThemeResource CorollaE120_Panel}"
                                   Command="{Binding RelayC_Fan1}"
-                                  IsChecked="{x:Bind ClimateControl.control.ChekedFan1}"
-                                  IsEnabled="{x:Bind ClimateControl.control.EnabledFan1}">
+                                  IsChecked="{x:Bind ClimateControl.ChekedFan1, Mode=TwoWay}"
+                                  IsEnabled="{x:Bind ClimateControl.EnabledFan1, Mode=OneWay}">
                             <Viewbox>
                                 <PathIcon Data="M12,11A1,1 0 0,0 11,12A1,1 0 0,0 12,13A1,1 0 0,0 13,12A1,1 0 0,0 12,11M12.5,2C17,2 17.11,5.57 14.75,6.75C13.76,7.24 13.32,8.29 13.13,9.22C13.61,9.42 14.03,9.73 14.35,10.13C18.05,8.13 22.03,8.92 22.03,12.5C22.03,17 18.46,17.1 17.28,14.73C16.78,13.74 15.72,13.3 14.79,13.11C14.59,13.59 14.28,14 13.88,14.34C15.87,18.03 15.08,22 11.5,22C7,22 6.91,18.42 9.27,17.24C10.25,16.75 10.69,15.71 10.89,14.79C10.4,14.59 9.97,14.27 9.65,13.87C5.96,15.85 2,15.07 2,11.5C2,7 5.56,6.89 6.74,9.26C7.24,10.25 8.29,10.68 9.22,10.87C9.41,10.39 9.73,9.97 10.14,9.65C8.15,5.96 8.94,2 12.5,2Z"
                                       Width="24"
@@ -188,8 +188,8 @@
                           Grid.Column="1"
                           HorizontalAlignment="Center" VerticalAlignment="Center"
                           Command="{Binding RelayC_AirFront}"
-                          IsChecked="{x:Bind ClimateControl.control.ChekedAirFront,Mode=TwoWay}"
-                          IsEnabled="{x:Bind ClimateControl.control.EnabledAirDown}">
+                          IsChecked="{x:Bind ClimateControl.ChekedAirFront,Mode=TwoWay}"
+                          IsEnabled="{x:Bind ClimateControl.EnabledAirDown, Mode=OneWay}">
                     <Viewbox>
                         <PathIcon Data="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"
                                       Width="24"
@@ -200,8 +200,8 @@
                           Grid.Column="0"
                           HorizontalAlignment="Center" VerticalAlignment="Center"
                           Command="{Binding RelayC_VentFront}"
-                          IsChecked="{x:Bind ClimateControl.control.ChekedVentFront,Mode=TwoWay}"
-                          IsEnabled="{x:Bind ClimateControl.control.EnabledVentFront}">
+                          IsChecked="{x:Bind ClimateControl.ChekedVentFront,Mode=TwoWay}"
+                          IsEnabled="{x:Bind ClimateControl.EnabledVentFront, Mode=OneWay}">
                     <Viewbox>
                         <PathIcon Data="M15,23C14.7,23 14.5,22.9 14.3,22.7C13.9,22.3 14,21.7 14.4,21.3V21.3C14.9,20.9 16.1,19.5 16.1,18.4C16.1,17.8 15.7,17.2 15.3,16.5C14.8,15.7 14.1,14.7 14.1,13.5C14.1,11.2 15.4,10.3 15.6,10.2C16.1,9.9 16.7,10.1 17,10.5C17.3,11 17.1,11.6 16.7,11.9V11.9C16.7,11.9 16.2,12.3 16.2,13.5C16.2,14.1 16.6,14.7 17,15.4C17.5,16.2 18.2,17.2 18.2,18.4C18.2,20.6 16.1,22.6 15.9,22.8C15.5,22.9 15.2,23 15,23M11.7,22.7C11.9,22.5 14,20.5 14,18.3C14,17.1 13.4,16.1 12.8,15.3C12.4,14.6 12,14 12,13.4C12,12.2 12.5,11.8 12.5,11.8V11.8C13,11.5 13.1,10.9 12.8,10.4C12.5,9.9 11.9,9.8 11.4,10.1C11.2,10.2 9.9,11.1 9.9,13.4C9.9,14.6 10.5,15.6 11.1,16.4C11.5,17.1 11.9,17.7 11.9,18.3C11.9,19.4 10.7,20.8 10.2,21.2V21.2C9.8,21.6 9.8,22.2 10.1,22.6C10.3,22.8 10.6,22.9 10.8,22.9C11.2,23 11.5,22.9 11.7,22.7M7.7,22.7C7.9,22.5 10,20.5 10,18.3C10,17.1 9.4,16.1 8.8,15.3C8.4,14.7 8,14.1 8,13.4C8,12.2 8.5,11.8 8.5,11.8V11.8C9,11.5 9.1,10.9 8.8,10.4C8.6,10 7.9,9.9 7.5,10.1C7.3,10.2 6,11.1 6,13.4C6,14.6 6.6,15.6 7.2,16.4C7.6,17.1 8,17.7 8,18.3C8,19.4 6.8,20.8 6.3,21.2V21.2C5.9,21.6 5.9,22.2 6.2,22.6C6.5,22.9 6.7,23 7,23C7.2,23 7.5,22.9 7.7,22.7M12,3C9.4,3 1,3.3 1,7C1,9.4 2.2,15.4 2.8,18H4L4.8,18H5V16H4.4C3.8,13.1 3,8.8 3,7C3,6 7.4,5 12,5C16.6,5 21,6 21,7C21,8.8 20.2,13.1 19.6,16H19V18H19.2L20,18H21.2C21.8,15.4 23,9.4 23,7C23,3.3 14.6,3 12,3Z"
                                       Width="24"
@@ -213,8 +213,8 @@
                           Grid.Column="0"
                           HorizontalAlignment="Right" 
                           Command="{Binding RelayC_AirDown}"
-                          IsChecked="{x:Bind ClimateControl.control.ChekedAirDown, Mode=TwoWay}"
-                          IsEnabled="{x:Bind ClimateControl.control.EnabledAirDown}">
+                          IsChecked="{x:Bind ClimateControl.ChekedAirDown, Mode=TwoWay}"
+                          IsEnabled="{x:Bind ClimateControl.EnabledAirDown, Mode=OneWay}">
                     <Viewbox>
                         <PathIcon Data="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"
                                       Width="24"
@@ -236,7 +236,7 @@
                 <Button x:Name="B_BlowerDown"
                         Style="{StaticResource CorollaE120_SingleAction}"
                         Command="{Binding RelayC_BlowerDown}"
-                        IsEnabled="{x:Bind ClimateControl.control.EnableBlowerDown}"
+                        IsEnabled="{x:Bind ClimateControl.EnableBlowerDown, Mode=OneWay}"
                     Grid.Column="0">
                     <Viewbox>
                         <PathIcon Data="M13 19C13 17.59 13.5 16.3 14.3 15.28C14.17 14.97 14.03 14.65 13.86 14.34C14.26 14 14.57 13.59 14.77 13.11C15.26 13.21 15.78 13.39 16.25 13.67C17.07 13.25 18 13 19 13C20.05 13 21.03 13.27 21.89 13.74C21.95 13.37 22 12.96 22 12.5C22 8.92 18.03 8.13 14.33 10.13C14 9.73 13.59 9.42 13.11 9.22C13.3 8.29 13.74 7.24 14.73 6.75C17.09 5.57 17 2 12.5 2C8.93 2 8.14 5.96 10.13 9.65C9.72 9.97 9.4 10.39 9.21 10.87C8.28 10.68 7.23 10.25 6.73 9.26C5.56 6.89 2 7 2 11.5C2 15.07 5.95 15.85 9.64 13.87C9.96 14.27 10.39 14.59 10.88 14.79C10.68 15.71 10.24 16.75 9.26 17.24C6.9 18.42 7 22 11.5 22C12.31 22 13 21.78 13.5 21.41C13.19 20.67 13 19.86 13 19M12 13C11.43 13 11 12.55 11 12S11.43 11 12 11C12.54 11 13 11.45 13 12S12.54 13 12 13M23 18V20H15V18H23Z"
@@ -315,7 +315,7 @@
                 <Button x:Name="B_BlowerUp"
                         Command="{Binding RelayC_BlowerUp}"
                         Style="{StaticResource CorollaE120_SingleAction}"
-                        IsEnabled="{x:Bind ClimateControl.control.EnableBlowerUp}"
+                        IsEnabled="{x:Bind ClimateControl.EnableBlowerUp, Mode=OneWay}"
                         Grid.Column="2">
                     <Viewbox>
                         <PathIcon Data="M13 19C13 17.59 13.5 16.3 14.3 15.28C14.17 14.97 14.03 14.65 13.86 14.34C14.26 14 14.57 13.59 14.77 13.11C15.26 13.21 15.78 13.39 16.25 13.67C17.07 13.25 18 13 19 13C20.05 13 21.03 13.27 21.89 13.74C21.95 13.37 22 12.96 22 12.5C22 8.92 18.03 8.13 14.33 10.13C14 9.73 13.59 9.42 13.11 9.22C13.3 8.29 13.74 7.24 14.73 6.75C17.09 5.57 17 2 12.5 2C8.93 2 8.14 5.96 10.13 9.65C9.72 9.97 9.4 10.39 9.21 10.87C8.28 10.68 7.23 10.25 6.73 9.26C5.56 6.89 2 7 2 11.5C2 15.07 5.95 15.85 9.64 13.87C9.96 14.27 10.39 14.59 10.88 14.79C10.68 15.71 10.24 16.75 9.26 17.24C6.9 18.42 7 22 11.5 22C12.31 22 13 21.78 13.5 21.41C13.19 20.67 13 19.86 13 19M12 13C11.43 13 11 12.55 11 12S11.43 11 12 11C12.54 11 13 11.45 13 12S12.54 13 12 13M20 15V18H23V20H20V23H18V20H15V18H18V15H20Z"
@@ -333,7 +333,7 @@
                 <Button Style="{StaticResource CorollaE120_SingleAction}"
                         Grid.Column="0"
                         Command="{Binding RelayC_AirMixDown}"
-                        IsEnabled="{x:Bind ClimateControl.control.EnableAirMixDown}">
+                        IsEnabled="{x:Bind ClimateControl.EnableAirMixDown, Mode=OneWay}">
                     <Viewbox>
                         <PathIcon Data="M17.41 12.17L14.24 9L12.83 10.41L17.41 15L22 10.41L20.58 9M10 13V5C10 3.34 8.66 2 7 2S4 3.34 4 5V13C1.79 14.66 1.34 17.79 3 20S7.79 22.66 10 21 12.66 16.21 11 14C10.72 13.62 10.38 13.28 10 13M7 4C7.55 4 8 4.45 8 5V8H6V5C6 4.45 6.45 4 7 4Z"
                                       Width="24"
@@ -403,7 +403,7 @@
                 <Button Style="{StaticResource CorollaE120_SingleAction}"
                         Grid.Column="2"
                         Command="{Binding RelayC_AirMixUp}"
-                        IsEnabled="{x:Bind ClimateControl.control.EnableAirMixUp}">
+                        IsEnabled="{x:Bind ClimateControl.EnableAirMixUp, Mode=OneWay}">
                     <Viewbox>
                         <PathIcon Data="M17.41 11.83L20.58 15L22 13.59L17.41 9L12.82 13.59L14.24 15L17.41 11.83M10 13V5C10 3.34 8.66 2 7 2S4 3.34 4 5V13C1.79 14.66 1.34 17.79 3 20S7.79 22.66 10 21 12.66 16.21 11 14C10.72 13.62 10.38 13.28 10 13M7 4C7.55 4 8 4.45 8 5V8H6V5C6 4.45 6.45 4 7 4Z"
                                       Width="24"
@@ -426,7 +426,7 @@
                                VerticalAlignment="Center"
                                TextLineBounds="Tight"
                                d:Text="100"
-                               Text="{x:Bind ClimateControl.control.AmbientLight, Mode=TwoWay}"/>
+                               Text="{x:Bind ClimateControl.AmbientLight, Mode=TwoWay}"/>
                         <TextBlock Text="LUZ"
                                FontSize="50"/>
                     </StackPanel>
@@ -440,7 +440,7 @@
                                VerticalAlignment="Center"
                                TextLineBounds="Tight"
                                d:Text="25"
-                               Text="{x:Bind ClimateControl.control.InsideTemperature, Mode=TwoWay}"/>
+                               Text="{x:Bind ClimateControl.InsideTemperature, Mode=TwoWay}"/>
                         <TextBlock Text="INT"
                                FontSize="50"/>
                     </StackPanel>
@@ -454,7 +454,7 @@
                                VerticalAlignment="Center"
                                TextLineBounds="Tight"
                                    d:Text="15"
-                               Text="{x:Bind ClimateControl.control.DewPointValue, Mode=TwoWay}"/>
+                               Text="{x:Bind ClimateControl.DewPointValue, Mode=TwoWay}"/>
                         <TextBlock Text="PRO"
                                FontSize="50"/>
                     </StackPanel>
@@ -468,7 +468,7 @@
                                VerticalAlignment="Center"
                                TextLineBounds="Tight"
                                    d:Text="5"
-                               Text="{x:Bind ClimateControl.control.EvaporatorTemperature, Mode=TwoWay}"/>
+                               Text="{x:Bind ClimateControl.EvaporatorTemperature, Mode=TwoWay}"/>
                         <TextBlock Text="EVA"
                                FontSize="50"/>
                     </StackPanel>
@@ -482,7 +482,7 @@
                                VerticalAlignment="Center"
                                TextLineBounds="Tight"
                                    d:Text="25"
-                               Text="{x:Bind ClimateControl.control.AmbientTemperature, Mode=TwoWay}"/>
+                               Text="{x:Bind ClimateControl.AmbientTemperature, Mode=TwoWay}"/>
                         <TextBlock Text="AMB"
                                FontSize="50"/>
                     </StackPanel>
@@ -496,7 +496,7 @@
                                VerticalAlignment="Center"
                                TextLineBounds="Tight"
                                    d:Text="70"
-                               Text="{x:Bind ClimateControl.control.InsideHumidity, Mode=TwoWay}"/>
+                               Text="{x:Bind ClimateControl.InsideHumidity, Mode=TwoWay}"/>
                         <TextBlock Text="HUM"
                                FontSize="50"/>
                     </StackPanel>
@@ -510,7 +510,7 @@
                                VerticalAlignment="Center"
                                TextLineBounds="Tight"
                                    d:Text="25"
-                               Text="{x:Bind ClimateControl.control.ThermalSensation, Mode=TwoWay}"/>
+                               Text="{x:Bind ClimateControl.ThermalSensation, Mode=TwoWay}"/>
                         <TextBlock Text="SEN"
                                FontSize="50"/>
                     </StackPanel>

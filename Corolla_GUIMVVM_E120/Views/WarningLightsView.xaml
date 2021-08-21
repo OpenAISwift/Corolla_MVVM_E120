@@ -6,25 +6,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:base ="using:Corolla_GUIMVVM_E120.Views.Base"
-    DataContext="{Binding ClimateControlViewModel, Source={StaticResource Locator}}"
+    DataContext="{Binding WarningLightsViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     d:DesignHeight="100"
     d:DesignWidth="280"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    
     <Grid>
-        <ToggleButton x:Name="HazardLightsButton"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      Height="100"
-                      Width="280"
-                      Command="{x:Bind ClimateControl.WarningLigth}"
-                      IsEnabled="{x:Bind ClimateControl.control.EnableWarningLigth}"
-                      IsChecked="{x:Bind ClimateControl.control.ChekedWarningLigth, Mode=TwoWay}">
-            <StackPanel Orientation="Horizontal">
-                <Viewbox x:Name="HazardLightsIcon"
-                                 VerticalAlignment="Center"
-                                 HorizontalAlignment="Center">
+        <ToggleButton 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Height="100"
+            Width="280"
+            Command="{x:Bind Control.WarningLigth}"
+            IsEnabled="{x:Bind Control.EnableWarningLigth}"
+            IsChecked="{x:Bind Control.ChekedWarningLigth, Mode=TwoWay}">
+            <StackPanel 
+                Orientation="Horizontal">
+                <Viewbox 
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
                     <PathIcon Data="M12,12L14.33,16H9.68L12,12M12,8L6.21,18H17.8L12,8M12,2L1,21H23L12,2M12,6L19.53,19H4.47L12,6Z"/>
                 </Viewbox>
             </StackPanel>

@@ -8,7 +8,6 @@
     <Application.Resources>
         <ResourceDictionary>
             <locator:ViewModelLocator x:Key="Locator"/>
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles\ResourceDictionary.xaml"/>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />

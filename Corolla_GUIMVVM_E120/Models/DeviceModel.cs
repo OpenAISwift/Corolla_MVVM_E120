@@ -90,8 +90,7 @@ namespace Corolla_GUIMVVM_E120.Models
 
         public override int GetHashCode()
         {
-            return this.ID.GetHashCode()
-                ^ this.Name.GetHashCode();
+            return ID.GetHashCode() ^ Name.GetHashCode();
         }
 
         public bool Equals(DeviceModel _deviceModel )
@@ -109,23 +108,23 @@ namespace Corolla_GUIMVVM_E120.Models
             //    return false;
             //}
 
-            if (this.BaudRate.CompareTo(_deviceModel.BaudRate) != 0)
+            if (BaudRate.CompareTo(_deviceModel.BaudRate) != 0)
             {
                 return true;
             }
-            if (this.Parity.CompareTo(_deviceModel.Parity) != 0)
+            if (Parity.CompareTo(_deviceModel.Parity) != 0)
             {
                 return true;
             }
-            if (this.StopBit.CompareTo(_deviceModel.StopBit) != 0)
+            if (StopBit.CompareTo(_deviceModel.StopBit) != 0)
             {
                 return true;
             }
-            if (this.HandShake.CompareTo(_deviceModel.HandShake) != 0)
+            if (HandShake.CompareTo(_deviceModel.HandShake) != 0)
             {
                 return true;
             }
-            if (this.DataBits.CompareTo(_deviceModel.DataBits) != 0)
+            if (DataBits.CompareTo(_deviceModel.DataBits) != 0)
             {
                 return true;
             }
