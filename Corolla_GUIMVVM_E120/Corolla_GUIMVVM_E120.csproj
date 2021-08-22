@@ -81,7 +81,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contants\Constants.cs" />
-    <Compile Include="Models\ClockModel.cs" />
+    <Compile Include="Models\ClimateControlModel.cs" />
     <Compile Include="Models\DeviceListEntry.cs" />
     <Compile Include="Models\DeviceModel.cs" />
     <Compile Include="Models\PageType.cs" />
@@ -95,6 +95,7 @@
     <Compile Include="Services\SerialDeviceService\SerialDeviceService.cs" />
     <Compile Include="ViewModels\Base\DelegateCommand.cs" />
     <Compile Include="ViewModels\Base\DelegateCommandAsync.cs" />
+    <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
     <Compile Include="ViewModels\ClimateControlViewModel.cs" />
@@ -108,6 +109,9 @@
     </Compile>
     <Compile Include="Views\ClockUserControl.xaml.cs">
       <DependentUpon>ClockUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InfoView.xaml.cs">
+      <DependentUpon>InfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -161,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ClockUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

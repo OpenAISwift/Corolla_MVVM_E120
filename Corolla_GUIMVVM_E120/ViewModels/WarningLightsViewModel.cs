@@ -59,11 +59,11 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         {
             if (ChekedWarningLigth)
             {
-                _serialDeviceService.WriteToPort("< w,1 >");
+                _serialDeviceService.WriteToPort("<w,1>");
             }
             else
             {
-                _serialDeviceService.WriteToPort("< w,0 >");
+                _serialDeviceService.WriteToPort("<w,0>");
             }
         }
         #endregion

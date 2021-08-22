@@ -363,99 +363,46 @@ namespace Corolla_GUIMVVM_E120.ViewModels
             _loaderService = loaderService;
 
             device = new DeviceModel();
-
-
-            _serialDeviceService.NewDataDevice += _serialDeviceService_NewDataDevice;
         }
 
-        private void _serialDeviceService_NewDataDevice(object sender, EventArgs e)
-        {
-            string str_dataInt = (string)sender;
-            DeviceData = str_dataInt;
-            str_data = str_dataInt.Split(str_Delimiter, StringSplitOptions.RemoveEmptyEntries);
-            if (str_data[0] == "<")
-            {
-                for (byte i = 1; i < str_data.Length; i += 1)
-                {
-                    switch (str_data[i])
-                    {
-                        case "I":
-                            if (str_data[i + 1] == "1")
-                            {
-                                Illumination = true;
-                                break;
-                            }
-                            else
-                            {
-                                Illumination = false;
-                                break;
-                            }
-                        case "Te":
-                            EvaporatorTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
-                            break;
-                        case "Ta":
-                            AmbientTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
-                            break;
-                        case "Ti":
-                            InsideTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
-                            break;
-                        case "Ts":
-                            ThermalSensation = str_data[i + 1];
-                            break;
-                        case "H":
-                            InsideHumidity = Convert.ToString(short.Parse(str_data[i + 1]));
-                            break;
-                        case "Pr":
-                            DewPointValue = Convert.ToString(short.Parse(str_data[i + 1]));
-                            break;
-                        case "La":
-                            AmbientLight = Convert.ToString(short.Parse(str_data[i + 1]));
-                            break;
-                        case "F1":
-                            if (str_data[i + 1] == "1")
-                            {
-                                ChekedFan1 = true;
-                                break;
-                            }
-                            else
-                            {
-                                ChekedFan1 = false;
-                                break;
-                            }
-                        case "Bl":
-                            StatusBlower(str_data[i + 1]);
-                            break;
-                        case "Co":
-                            if (str_data[i + 1] == "1")
-                            {
-                                ChekedAc = true;
-                                break;
-                            }
-                            else
-                            {
-                                ChekedAc = false;
-                                break;
-                            }
-
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
 
         public override Task OnNavigatedFrom(NavigationEventArgs args)
         {
+            _serialDeviceService.AvailableData -= SerialDeviceAvailableData;
+
             return null;
         }
 
         public override Task OnNavigatedTo(NavigationEventArgs args)
         {
             LoadLocalData();
+            UpdateViewClimateControl(_serialDeviceService.ControlModelData);
+
             _serialDeviceService.DeviceCheck(device);
+            _serialDeviceService.AvailableData += SerialDeviceAvailableData;
+
             return null;
         }
 
+        private void SerialDeviceAvailableData(object sender, EventArgs e)
+        {
+            ClimateControlModel climateControl = (ClimateControlModel)sender;
+            UpdateViewClimateControl(climateControl);
+        }
+
+        private void UpdateViewClimateControl(ClimateControlModel climateControlModel)
+        {
+            AmbientLight = climateControlModel.AmbientLight;
+            AmbientTemperature = climateControlModel.AmbientTemperature;
+            EvaporatorTemperature = climateControlModel.EvaporatorTemperature;
+            InsideTemperature = climateControlModel.InsideTemperature;
+            ThermalSensation = climateControlModel.ThermalSensation;
+            InsideHumidity = climateControlModel.InsideHumidity;
+            ChekedAc = climateControlModel.StatusMagneticClutch;
+            ChekedFan1 = climateControlModel.StatusFan1;
+            DewPointValue = climateControlModel.DewPointValue;
+            //StatusBlower(climateControlModel.StatusBlower);
+        }
         /// <summary>
         /// Optiene los datos almacenados localmente del dispositivo
         /// </summary>

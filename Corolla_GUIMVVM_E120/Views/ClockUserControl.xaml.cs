@@ -26,7 +26,7 @@ namespace Corolla_GUIMVVM_E120.Views
 
         public ClockUserControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

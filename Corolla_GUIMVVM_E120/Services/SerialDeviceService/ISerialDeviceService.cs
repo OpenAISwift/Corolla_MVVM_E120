@@ -11,7 +11,9 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         /// <param name="device"></param>
         void DeviceCheck(DeviceModel device);
         
-        event EventHandler NewDataDevice;
+        ClimateControlModel ControlModelData { get; }
+
+        event EventHandler AvailableData;
         void WriteToPort(string DataDevice);
     }
 }

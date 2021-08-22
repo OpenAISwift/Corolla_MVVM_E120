@@ -30,10 +30,12 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         private TypedEventHandler<DeviceWatcher, DeviceInformationUpdate> deviceRemovedEventHandler;
         private TypedEventHandler<DeviceAccessInformation, DeviceAccessChangedEventArgs> deviceAccessEventHandler;
 
-        public event EventHandler NewDataDevice;
+        public event EventHandler AvailableData;
         #endregion
+
         #region Declaracion de clases
         private DeviceModel localDeviceModel;
+        private ClimateControlModel climateControlData;
 
         private DeviceInformation deviceInformation;
         private DeviceAccessInformation deviceAccessInformation;
@@ -57,6 +59,9 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         /// </summary>
         private string deviceSelector;
 
+        private readonly string[] str_Delimiter = new string[] { " ", ",", ":" };
+        private string[] str_data;
+
         private bool changedSettings;
         private bool deviceIsDetected;
         private bool watcherSuspended;
@@ -66,6 +71,12 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 
         #region Propiedades
         private bool IsDeviceConnected => device != null;
+
+        public ClimateControlModel ControlModelData 
+        {
+            get => climateControlData;
+        }
+
         #endregion
 
         #region Metodos
@@ -73,6 +84,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         public SerialDeviceService()
         {
             localDeviceModel = new DeviceModel();
+            climateControlData = new ClimateControlModel();
 
             watcherStarted = false;
             watcherSuspended = false;
@@ -368,8 +380,84 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
             if (bytesRead > 0)
             {
                 string strFromPort = DataReaderObject.ReadString(bytesRead);
-                NewDataDevice(strFromPort, null);
+                FrameAnalyzer(strFromPort);
+                AvailableData?.Invoke(climateControlData, null);
                 Debug.WriteLine("Recivido:" + strFromPort);
+            }
+        }
+
+        private void FrameAnalyzer(string data)
+        {
+            string str_dataInt = data;
+            str_data = str_dataInt.Split(str_Delimiter, StringSplitOptions.RemoveEmptyEntries);
+            if (str_data[0] == "<")
+            {
+                for (byte i = 1; i < str_data.Length; i += 1)
+                {
+                    switch (str_data[i])
+                    {
+                        case "I":
+                            if (str_data[i + 1] == "1")
+                            {
+                                climateControlData.Illumination = true;
+                                break;
+                            }
+                            else
+                            {
+                                climateControlData.Illumination = false;
+                                break;
+                            }
+                        case "Te":
+                            climateControlData.EvaporatorTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
+                            break;
+                        case "Ta":
+                            climateControlData.AmbientTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
+                            break;
+                        case "Ti":
+                            climateControlData.InsideTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
+                            break;
+                        case "Ts":
+                            climateControlData.ThermalSensation = str_data[i + 1];
+                            break;
+                        case "H":
+                            climateControlData.InsideHumidity = Convert.ToString(short.Parse(str_data[i + 1]));
+                            break;
+                        case "Pr":
+                            climateControlData.DewPointValue = Convert.ToString(short.Parse(str_data[i + 1]));
+                            break;
+                        case "La":
+                            climateControlData.AmbientLight = Convert.ToString(short.Parse(str_data[i + 1]));
+                            break;
+                        case "F1":
+                            if (str_data[i + 1] == "1")
+                            {
+                                climateControlData.StatusFan1 = true;
+                                break;
+                            }
+                            else
+                            {
+                                climateControlData.StatusFan1 = false;
+                                break;
+                            }
+                        case "Bl":
+                            climateControlData.StatusBlower = str_data[i + 1];
+                            break;
+                        case "Co":
+                            if (str_data[i + 1] == "1")
+                            {
+                                climateControlData.StatusMagneticClutch = true;
+                                break;
+                            }
+                            else
+                            {
+                                climateControlData.StatusMagneticClutch = false;
+                                break;
+                            }
+
+                        default:
+                            break;
+                    }
+                }
             }
         }
 

@@ -22,6 +22,7 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
 
             _container.RegisterType<ClockViewModel>();
             _container.RegisterType<WarningLightsViewModel>();
+            _container.RegisterType<InfoViewModel>();
 
             _container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ILoaderService, LoaderService>(new ContainerControlledLifetimeManager());
@@ -35,5 +36,6 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
 
         public ClockViewModel ClockViewModel => _container.Resolve<ClockViewModel>();
         public WarningLightsViewModel WarningLightsViewModel => _container.Resolve<WarningLightsViewModel>();
+        public InfoViewModel InfoViewModel => _container.Resolve<InfoViewModel>();
     }
 }
