@@ -6,16 +6,32 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Corolla_GUIMVVM_E120.ViewModels.Base
 {
+    /// <summary>
+    /// Aplicación de <see cref="INotifyPropertyChanged"/> para simplificar los modelos.
+    /// </summary>
+    [Windows.Foundation.Metadata.WebHostHidden]
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
-        #region Declaracion de eventos
+        private Frame _appFrame;
+        public Frame AppFrame
+        {
+            get => _appFrame;
+        }
+
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        public abstract Task OnNavigatedFrom(NavigationEventArgs args);
+        public abstract Task OnNavigatedTo(NavigationEventArgs args);
 
         /// <summary>   
         /// Evento de multidifusión para las notificaciones de cambios en las propiedades.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
 
         /// <summary>
         /// Comprueba si una propiedad ya coincide con un valor deseado.  
@@ -27,11 +43,10 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
         /// <param name="propertyName">Nombre de la propiedad utilizada para notificar a los oyentes.  
         /// Este valor es opcional y puede proporcionarse automáticamente cuando se invoca desde
         /// compiladores que soportan CallerMemberName.</param>
-        /// <returns>Verdadero si el valor fue cambiado, 
-        /// falso si el valor existente coincide con el valor deseado.</returns>
-        protected bool RaisePropertyChanged<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        /// <returns>Verdadero si el valor fue cambiado, falso si el valor existente coincide con el valor deseado.</returns>
+        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
-            if (Equals(storage, value))
+            if (object.Equals(storage, value))
             {
                 return false;
             }
@@ -49,6 +64,11 @@ namespace Corolla_GUIMVVM_E120.ViewModels.Base
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal void SetAppFrame(Frame viewFrame)
+        {
+            _appFrame = viewFrame;
         }
     }
 }

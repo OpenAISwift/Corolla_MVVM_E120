@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
 {
-    public class ClockViewModel : ViewModelPageBase
+    public class ClockViewModel : ViewModelBase
     {
         #region Variables
         private DispatcherTimer dispatcherTimer;
@@ -24,17 +24,17 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         public string Hour
         {
             get => _hour;
-            set => RaisePropertyChanged(ref _hour, value);
+            set => SetProperty(ref _hour, value);
         }
         public string Minute
         {
             get => _minute;
-            set => RaisePropertyChanged(ref _minute, value);
+            set => SetProperty(ref _minute, value);
         }
         public string Date
         {
             get => _date;
-            set => RaisePropertyChanged(ref _date, value);
+            set => SetProperty(ref _date, value);
         }
         #endregion
 

@@ -57,21 +57,15 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         /// </summary>
         private string deviceSelector;
 
-        private bool changedSettings = false;
-        private bool deviceIsDetected = false;
-        private bool watcherSuspended = false;
-        private bool watcherStarted = false;
-
+        private bool changedSettings;
+        private bool deviceIsDetected;
+        private bool watcherSuspended;
+        private bool watcherStarted;
+        private bool isEnabledAutoReconnect;
         #endregion
 
         #region Propiedades
-        private bool IsDeviceConnected
-        {
-            get
-            {
-                return (device != null);
-            }
-        }
+        private bool IsDeviceConnected => device != null;
         #endregion
 
         #region Metodos
@@ -196,13 +190,16 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                     {
                         CloseDevice();
                     }
-                    if (localDeviceModel.Equals(device))
+                    else
                     {
-                        changedSettings = true;
+                        if (localDeviceModel.Equals(device))
+                        {
+                            changedSettings = true;
+                        }
                     }
                 }
                 localDeviceModel = device;
-                if(changedSettings)
+                if (changedSettings)
                 {
                     UpdateDeviceParameters();
 
@@ -218,9 +215,8 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 
             if (IsDeviceConnected != true && deviceIsDetected)
             {
-                await OpenDeviceAsync();
+                _ = await OpenDeviceAsync();
             }
-            
         }
 
         private async Task<bool> FindLocalDevice()
@@ -264,7 +260,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                 UpdateDeviceParameters();
 
                 //Notificar a la llamada de retorno registrada que el dispositivo ha sido abierto
-                deviceConnectedCallback?.Invoke(this, deviceInformation); 
+                deviceConnectedCallback?.Invoke(this, deviceInformation);
                 if (appSuspendEventHandler == null || appResumeEventHandler == null)
                 {
                     RegisterForAppEvents();
@@ -312,19 +308,18 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 
         private void UpdateDeviceParameters()
         {
-            device.BaudRate = localDeviceModel.BaudRate;
-            device.DataBits = localDeviceModel.DataBits;
-
             device.ReadTimeout = TimeSpan.FromMilliseconds(100);
             device.WriteTimeout = TimeSpan.FromMilliseconds(100);
-            device.IsDataTerminalReadyEnabled = true;
-            device.IsRequestToSendEnabled = true;
-            device.Parity = SerialParity.None;
-            device.StopBits = SerialStopBitCount.One;
-            device.DataBits = 8;
-            device.Handshake = SerialHandshake.None;
 
-            //deviceIsUpdate = false;
+            device.BaudRate = localDeviceModel.BaudRate;
+            device.DataBits = localDeviceModel.DataBits;
+            device.Parity = (SerialParity)Enum.Parse(typeof(SerialParity), localDeviceModel.Parity);
+            device.StopBits = (SerialStopBitCount)Enum.Parse(typeof(SerialStopBitCount), localDeviceModel.StopBit);
+            device.Handshake = (SerialHandshake)Enum.Parse(typeof(SerialHandshake), localDeviceModel.HandShake);
+            device.DataBits = localDeviceModel.DataBits;
+            isEnabledAutoReconnect = localDeviceModel.AutoReconect;
+            device.IsDataTerminalReadyEnabled = localDeviceModel.DataTerminalReadyEnabled;
+            device.IsRequestToSendEnabled = localDeviceModel.RequestToSendEnabled;
         }
 
         private async void ReadDataPort()
@@ -354,7 +349,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                 {
                     if (DataReaderObject != null)
                     {
-                        DataReaderObject.DetachStream();
+                        _ = DataReaderObject.DetachStream();
                         DataReaderObject = null;
                     }
                 }
@@ -395,7 +390,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                 {
                     if (DataWriteObject != null)
                     {
-                        DataWriteObject.DetachStream();
+                        _ = DataWriteObject.DetachStream();
                         DataWriteObject = null;
                     }
                 }
@@ -409,7 +404,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
             if (dataSentDevice.Length != 0)
             {
                 Debug.WriteLine("Enviado:" + dataSentDevice);
-                DataWriteObject.WriteString(dataSentDevice);
+                _ = DataWriteObject.WriteString(dataSentDevice);
                 lock (WriteCancelLock)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -418,7 +413,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                     // The completion function should still be called so that we can properly handle a canceled task
                     storeAsyncTask = DataWriteObject.StoreAsync().AsTask(cancellationToken);
                 }
-                await storeAsyncTask;
+                _ = await storeAsyncTask;
             }
         }
 
@@ -445,16 +440,14 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         /// <param name="deviceInfo"></param>
         private async void OnDeviceAdded(DeviceWatcher sender, DeviceInformation deviceInfo)
         {
-            if ((deviceInformation != null) && (deviceInfo.Id == deviceInformation.Id) && !IsDeviceConnected && localDeviceModel.AutoReconect)
+            if ((deviceInformation != null) && (deviceInfo.Id == deviceInformation.Id) && !IsDeviceConnected && isEnabledAutoReconnect)
             {
                 await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                 {
-                    await OpenDeviceAsync();
+                    _ = await OpenDeviceAsync();
                 });
             }
         }
-
-        
 
         /// <summary>
         /// Cierra el dispositivo, detiene el observador del dispositivo, 
@@ -497,7 +490,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
             deviceSelector = null;
 
             deviceConnectedCallback = null;
-            deviceCloseCallback = null;            
+            deviceCloseCallback = null;
         }
 
         private void UnregisterFromDeviceWatcherEvents()

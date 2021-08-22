@@ -81,6 +81,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contants\Constants.cs" />
+    <Compile Include="Models\ClockModel.cs" />
     <Compile Include="Models\DeviceListEntry.cs" />
     <Compile Include="Models\DeviceModel.cs" />
     <Compile Include="Models\PageType.cs" />
@@ -94,7 +95,6 @@
     <Compile Include="Services\SerialDeviceService\SerialDeviceService.cs" />
     <Compile Include="ViewModels\Base\DelegateCommand.cs" />
     <Compile Include="ViewModels\Base\DelegateCommandAsync.cs" />
-    <Compile Include="ViewModels\Base\ViewModelPageBase.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="ViewModels\Base\ViewModelLocator.cs" />
     <Compile Include="ViewModels\ClimateControlViewModel.cs" />

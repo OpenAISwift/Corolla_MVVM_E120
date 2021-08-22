@@ -135,6 +135,9 @@
   <data name="MessageNotSelected" xml:space="preserve">
     <value>No seleccionado</value>
   </data>
+  <data name="SettingsAutoReconectText.Text" xml:space="preserve">
+    <value>Reconexion automatica</value>
+  </data>
   <data name="SettingsBaudRateComboBox.PlaceholderText" xml:space="preserve">
     <value>Seleccione la tada de baudios</value>
   </data>

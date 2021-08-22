@@ -9,7 +9,7 @@ namespace Corolla_GUIMVVM_E120.Views
 
         public SettingsView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

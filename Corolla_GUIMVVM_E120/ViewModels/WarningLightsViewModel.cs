@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
 {
-    public class WarningLightsViewModel : ViewModelPageBase
+    public class WarningLightsViewModel : ViewModelBase
     {
         #region Variables
         private readonly ISerialDeviceService _serialDeviceService;
@@ -22,12 +22,12 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         public bool EnableWarningLigth
         {
             get => _enabledWarningLigth;
-            set => RaisePropertyChanged(ref _enabledWarningLigth, value);
+            set => SetProperty(ref _enabledWarningLigth, value);
         }
         public bool ChekedWarningLigth
         {
             get => _chekedWarningLigth;
-            set => RaisePropertyChanged(ref _chekedWarningLigth, value);
+            set => SetProperty(ref _chekedWarningLigth, value);
         }
         #endregion
 

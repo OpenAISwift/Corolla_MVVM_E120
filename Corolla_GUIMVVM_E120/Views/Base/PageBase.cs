@@ -7,13 +7,13 @@ namespace Corolla_GUIMVVM_E120.Views.Base
 {
     public class PageBase : Page
     {
-        private ViewModelPageBase _vm;
+        private ViewModelBase _vm;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            _vm = (ViewModelPageBase)this.DataContext;
+            _vm = (ViewModelBase)this.DataContext;
             _vm.SetAppFrame(this.Frame);
             _vm.OnNavigatedTo(e);
         }

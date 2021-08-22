@@ -8,16 +8,18 @@
     xmlns:base ="using:Corolla_GUIMVVM_E120.Views.Base"
     DataContext="{Binding SettingsViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d"
-    d:Width="800">
+    d:Width="800"
+    d:Height="1300">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid Margin="12,20,12,12">
             <ScrollViewer 
                 VerticalScrollBarVisibility="Auto" 
-                VerticalScrollMode="Auto" >
+                VerticalScrollMode="Auto">
                 <StackPanel 
                     Orientation="Vertical" 
                     Margin="0,10,0,0">
+                    <d:TextBlock Text="Texto de prueba" Style="{StaticResource TitleTextBlockStyle}" />
                     <TextBlock 
                         x:Uid="SettingsTitleDevice"
                         Style="{StaticResource TitleTextBlockStyle}"
@@ -25,10 +27,11 @@
                     <StackPanel Orientation="Vertical" 
                                 Margin="10,30,0,0">
                         <StackPanel Orientation="Horizontal">
+                            <d:TextBlock Text="Texto de prueba" />
                             <TextBlock x:Uid="SettingsDeviceText" />
-                            <TextBlock Text=" = "/> 
-                            <TextBlock Margin="5,0,0,0" 
-                                       Text="{x:Bind Settings.localDataDevice.Name}"/>
+                            <TextBlock Text=" = " />
+                            <d:TextBlock Text="Texto de prueba" />
+                            <TextBlock Text="{x:Bind Settings.NameDeviceSelect}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0">
@@ -37,152 +40,119 @@
                                 ItemsSource="{x:Bind Settings.ListOfDevices}"
                                 SelectedValuePath="DeviceName"
                                 DisplayMemberPath="DeviceName"
-                                SelectedValue="{x:Bind Settings.selectDevice.Name ,Mode=TwoWay}">
+                                SelectedValue="{x:Bind Settings.NameDeviceSelect ,Mode=TwoWay}">
                             </ComboBox>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" 
                                 Margin="10,30,0,0">
                         <StackPanel Orientation="Horizontal">
+                            <d:TextBlock Text="Texto de prueba" />
                             <TextBlock x:Uid="SettingsBaudRateText"/>
-                            <TextBlock Text=" =" />
-                            <TextBlock Margin="5,0,0,0"
-                                       Text="{x:Bind Settings.localDataDevice.BaudRate}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0">
                             <ComboBox
                                 x:Uid="SettingsBaudRateComboBox"
                                 ItemsSource="{x:Bind Settings.ListOfBaudRate}"
-                                SelectedItem="{x:Bind Settings.selectDevice.BaudRate, Mode=TwoWay}"/>
+                                SelectedItem="{x:Bind Settings.BaudRateDeviceSelect, Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical"
                                 Margin="10,30,0,0">
                         <StackPanel Orientation="Horizontal">
+                            <d:TextBlock Text="Texto de prueba" />
                             <TextBlock x:Uid="SettingsParityText"/>
-                            <TextBlock Text=" =" />
-                            <TextBlock Margin="5,0,0,0"
-                                       Text="{x:Bind Settings.localDataDevice.Parity}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0" >
                             <ComboBox 
                                 x:Uid="SettingsParityComboBox"
                                 ItemsSource="{x:Bind Settings.ListOfParity}"
-                                SelectedItem="{x:Bind Settings.selectDevice.Parity, Mode=TwoWay}"/>
+                                SelectedItem="{x:Bind Settings.ParityDeviceSelect, Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical"
                                 Margin="10,30,0,0">
                         <StackPanel Orientation="Horizontal">
+                            <d:TextBlock Text="Texto de prueba" />
                             <TextBlock x:Uid="SettingsStopBitCountText"/>
-                            <TextBlock Text=" =" />
-                            <TextBlock Margin="5,0,0,0"
-                                       Text="{x:Bind Settings.localDataDevice.StopBit}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0">
                             <ComboBox 
                                 x:Uid="SettingsStopBidCountComboBox"
                                 ItemsSource="{x:Bind Settings.ListOfStopBit}"
-                                SelectedItem="{x:Bind Settings.selectDevice.StopBit,Mode=TwoWay}"/>
+                                SelectedItem="{x:Bind Settings.StopBitDeviceSelect,Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical"
                                 Margin="10,30,0,0">
                         <StackPanel Orientation="Horizontal">
+                            <d:TextBlock Text="Texto de prueba" />
                             <TextBlock x:Uid="SettingsHandShakeText"/>
-                            <TextBlock Text=" = "/>
-                            <TextBlock Margin="5,0,0,0"
-                                       Text="{x:Bind Settings.localDataDevice.HandShake}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0">
                             <ComboBox
                                 x:Uid="SettingsHandShakeComboBox"
                                 ItemsSource="{Binding ListOfHandShake}"
-                                SelectedItem="{x:Bind Settings.selectDevice.HandShake , Mode=TwoWay}"/>
+                                SelectedItem="{x:Bind Settings.HandShakeDeviceSelect , Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical"
                                 Margin="10,30,0,0">
                         <StackPanel Orientation="Horizontal">
+                            <d:TextBlock Text="Texto de prueba" />
                             <TextBlock x:Uid="SettingsDataBitText"/>
-                            <TextBlock Text=" = " />
-                            <TextBlock Margin="5,0,0,0" 
-                                       Text="{x:Bind Settings.localDataDevice.DataBits}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Margin="0,10,0,0">
                             <ComboBox 
                                 x:Uid="SettingsDataBitsComboBox"
                                 ItemsSource="{Binding ListOfDataBits}"
-                                SelectedItem="{x:Bind Settings.selectDevice.DataBits, Mode=TwoWay}"/>
+                                SelectedItem="{x:Bind Settings.DataBitsDeviceSelect, Mode=TwoWay}"/>
                         </StackPanel>
                     </StackPanel>
+
+                    <StackPanel Orientation="Vertical" 
+                                Margin="10,30,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <d:TextBlock Text="Texto de prueba" />
+                            <TextBlock x:Uid="SettingsAutoReconectText"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <ToggleSwitch IsOn="{x:Bind Settings.AutoReconectSelect, Mode=TwoWay}" />
+                        </StackPanel>
+                    </StackPanel>
+
                     <StackPanel Orientation="Vertical" 
                                 Margin="10,30,0,0">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Break State Signal"/>
-                            <TextBlock Text=" = " />
-                            <TextBlock x:Name="BreakStateSignalValue" 
-                                   Margin="5,0,0,0"
-                                   Text="Not Set"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <ToggleSwitch />
+                            <ToggleSwitch IsOn="{x:Bind Settings.BreakSignalStateSelect, Mode=TwoWay}" />
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" 
                                 Margin="10,30,0,0">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Data Terminal Ready Enabled = "/>
-                            <TextBlock 
-                                   Margin="5,0,0,0"
-                                   Text="Not Set"/>
+                            <TextBlock Text="Data Terminal Ready Enabled "/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <ToggleSwitch />
+                            <ToggleSwitch IsOn="{x:Bind Settings.DataTerminalReadyEnabledSelect, Mode=TwoWay}" />
                         </StackPanel>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" 
                                 Margin="10,30,0,0">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Request To Send Enabled = "/>
-                            <TextBlock 
-                                   Margin="5,0,0,0"
-                                   Text="Not Set"/>
+                            <TextBlock Text="Request To Send Enabled "/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <ToggleSwitch />
+                            <ToggleSwitch IsOn="{x:Bind Settings.RequestToSendEnabledSelect, Mode=TwoWay}" />
                         </StackPanel>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" 
-                                Margin="10,30,0,0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Auto Reconect = "/>
-                            <TextBlock 
-                                   Margin="5,0,0,0"
-                                   Text="Not Set"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <ToggleSwitch />
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="10,30,0,0">
-                        <TextBlock Text="Carrier Detect State = "/>
-                        <TextBlock x:Name="CarrierDetectStateValue"
-                                   Margin="5,0,0,0"
-                                   Text="Not Set"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" 
-                                    Margin="10,30,0,0">
-                        <TextBlock Text="Data Set Ready ="/>
-                        <TextBlock x:Name="DataSetReadyStateValue" 
-                                   Margin="5,0,0,0"
-                                   Text="Not Set"/>
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>

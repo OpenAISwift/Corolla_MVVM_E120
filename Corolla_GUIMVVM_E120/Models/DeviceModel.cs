@@ -3,111 +3,65 @@ using System;
 
 namespace Corolla_GUIMVVM_E120.Models
 {
-    public class DeviceModel : ViewModelBase, IEquatable<DeviceModel>
+    public class DeviceModel : IEquatable<DeviceModel>
     {
-        #region Variables privadas
-        private int _iD;
-        private string _name;
-        private uint _baudRate;
-        private string _parity;
-        private string _stopBit;
-        private string _handShake;
-        private ushort _dataBits;
+        #region Propiedades
+        public uint BaudRate { get; set; }
 
-        private bool _autoReconect;
+        public ushort DataBits { get; set; }
+
+        public bool AutoReconect { get; set; }
+        public bool BreakSignalState { get; set; }
+        public bool DataTerminalReadyEnabled { get; set; }
+        public bool RequestToSendEnabled { get; set; }
+
+        public string Name { get; set; }
+        public string Parity { get; set; }
+        public string StopBit { get; set; }
+        public string HandShake { get; set; }
         #endregion
 
         #region Metodos
+
         public DeviceModel()
         {
-            Name = null;
-            BaudRate = 0;
-            Parity = null;
-            StopBit = null;
-            HandShake = null;
-            DataBits = 0;
+            Name = "";
+            Parity = "None";
+            StopBit = "One";
+            HandShake = "None";
+
+            BaudRate = 115200;
+            DataBits = 8;
+
             AutoReconect = true;
-        }
-        #endregion
-
-        #region Propiedades
-        public int ID
-        {
-            get => _iD;
-            set => RaisePropertyChanged(ref _iD, value);
-        }
-        public string Name
-        {
-            get => _name;
-            set => RaisePropertyChanged(ref _name, value);
-        }
-        public uint BaudRate
-        {
-            get => _baudRate;
-            set => RaisePropertyChanged(ref _baudRate, value);
-        }
-        public string Parity
-        {
-            get => _parity;
-            set => RaisePropertyChanged(ref _parity, value);
-        }
-        public string StopBit
-        {
-            get => _stopBit;
-            set => RaisePropertyChanged(ref _stopBit, value);
-
-        }
-        public string HandShake
-        {
-            get => _handShake;
-            set => RaisePropertyChanged(ref _handShake, value);
-        }
-        public ushort DataBits
-        {
-            get => _dataBits;
-            set => RaisePropertyChanged(ref _dataBits, value);
+            BreakSignalState = false;
+            DataTerminalReadyEnabled = true;
+            RequestToSendEnabled = true;
         }
 
-        public bool AutoReconect
-        {
-            get => _autoReconect;
-            set => RaisePropertyChanged(ref _autoReconect, value);
-        }
-        #endregion
-
-        #region Metodos
         public override bool Equals(object obj)
         {
-            if (!(obj is DeviceModel _device))
-            {
-                return false;
-            }
-            else
-            {
-                return Equals(_device);
-            }
+            return obj is DeviceModel _device && Equals(_device);
         }
 
         public override int GetHashCode()
         {
-            return ID.GetHashCode() ^ Name.GetHashCode();
+            return DataBits.GetHashCode() ^ Name.GetHashCode();
         }
 
-        public bool Equals(DeviceModel _deviceModel )
+        public bool Equals(DeviceModel _deviceModel)
         {
             //Es la misma instancia
-            if (ReferenceEquals(this,_deviceModel))
+            if (ReferenceEquals(this, _deviceModel))
             {
                 return true;
             }
 
             // Realiza comparaciones
-
-            //if (this.Name.CompareTo(_deviceModel.Name)!=0)
-            //{
-            //    return false;
-            //}
-
+            if (Name.CompareTo(_deviceModel.Name) != 0)
+            {
+                return true;
+            }
             if (BaudRate.CompareTo(_deviceModel.BaudRate) != 0)
             {
                 return true;
@@ -128,7 +82,22 @@ namespace Corolla_GUIMVVM_E120.Models
             {
                 return true;
             }
-
+            if (AutoReconect.CompareTo(_deviceModel.AutoReconect) != 0)
+            {
+                return true;
+            }
+            if (BreakSignalState.CompareTo(_deviceModel.BreakSignalState) != 0)
+            {
+                return true;
+            }
+            if (DataTerminalReadyEnabled.CompareTo(_deviceModel.DataTerminalReadyEnabled) != 0)
+            {
+                return true;
+            }
+            if (RequestToSendEnabled.CompareTo(_deviceModel.RequestToSendEnabled) != 0)
+            {
+                return true;
+            }
             return false;
         }
         #endregion

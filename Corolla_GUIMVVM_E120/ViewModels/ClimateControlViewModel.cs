@@ -15,7 +15,7 @@ using System;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
 {
-    public class ClimateControlViewModel : ViewModelPageBase
+    public class ClimateControlViewModel : ViewModelBase
     {
         #region Variables
         private readonly DeviceModel device;
@@ -90,233 +90,233 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         public string DeviceData
         {
             get => _deviceData;
-            set => RaisePropertyChanged(ref _deviceData, value);
+            set => SetProperty(ref _deviceData, value);
         }
 
         public string AmbientTemperature
         {
             get => _ambientTemperature;
-            set => RaisePropertyChanged(ref _ambientTemperature, value);
+            set => SetProperty(ref _ambientTemperature, value);
         }
         public string InsideTemperature
         {
             get => _insideTemperature;
-            set => RaisePropertyChanged(ref _insideTemperature, value);
+            set => SetProperty(ref _insideTemperature, value);
         }
         public string InsideHumidity
         {
             get => _insideHumidity;
-            set => RaisePropertyChanged(ref _insideHumidity, value);
+            set => SetProperty(ref _insideHumidity, value);
         }
         public string EvaporatorTemperature
         {
             get => _evaporatorTemperature;
-            set => RaisePropertyChanged(ref _evaporatorTemperature, value);
+            set => SetProperty(ref _evaporatorTemperature, value);
         }
         public string AmbientLight
         {
             get => _ambientLight;
-            set => RaisePropertyChanged(ref _ambientLight, value);
+            set => SetProperty(ref _ambientLight, value);
         }
         public string DewPointValue
         {
             get => _dewPointValue;
-            set => RaisePropertyChanged(ref _dewPointValue, value);
+            set => SetProperty(ref _dewPointValue, value);
         }
         public string ThermalSensation
         {
             get => _thermalSensation;
-            set => RaisePropertyChanged(ref _thermalSensation, value);
+            set => SetProperty(ref _thermalSensation, value);
         }
 
         public bool EnabledDefrosterFront
         {
             get => _enableDefrosterFront;
-            set => RaisePropertyChanged(ref _enableDefrosterFront, value);
+            set => SetProperty(ref _enableDefrosterFront, value);
         }
         public bool EnabledDefrostRear
         {
             get => _enableDefrostRear;
-            set => RaisePropertyChanged(ref _enableDefrostRear, value);
+            set => SetProperty(ref _enableDefrostRear, value);
         }
         public bool EnabledAc
         {
             get => _enableAc;
-            set => RaisePropertyChanged(ref _enableAc, value);
+            set => SetProperty(ref _enableAc, value);
         }
         public bool EnabledAuto
         {
             get => _enableAuto;
-            set => RaisePropertyChanged(ref _enableAuto, value);
+            set => SetProperty(ref _enableAuto, value);
         }
         public bool EnabledAirMode
         {
             get => _enableAirMode;
-            set => RaisePropertyChanged(ref _enableAirMode, value);
+            set => SetProperty(ref _enableAirMode, value);
         }
         public bool EnabledFan1
         {
             get => _enabledFan1;
-            set => RaisePropertyChanged(ref _enabledFan1, value);
+            set => SetProperty(ref _enabledFan1, value);
         }
         public bool EnabledAirFront
         {
             get => _enableAirFront;
-            set => RaisePropertyChanged(ref _enableAirFront, value);
+            set => SetProperty(ref _enableAirFront, value);
         }
         public bool EnabledAirDown
         {
             get => _enableAirDown;
-            set => RaisePropertyChanged(ref _enableAirDown, value);
+            set => SetProperty(ref _enableAirDown, value);
         }
         public bool EnabledVentFront
         {
             get => _enableVentFront;
-            set => RaisePropertyChanged(ref _enableVentFront, value);
+            set => SetProperty(ref _enableVentFront, value);
         }
         public bool EnableBlowerUp
         {
             get => _enableBlowerUp;
-            set => RaisePropertyChanged(ref _enableBlowerUp, value);
+            set => SetProperty(ref _enableBlowerUp, value);
         }
         public bool EnableBlowerDown
         {
             get => _enableBlowerDown;
-            set => RaisePropertyChanged(ref _enableBlowerDown, value);
+            set => SetProperty(ref _enableBlowerDown, value);
         }
         public bool EnableAirMixUp
         {
             get => _enableAirMixUp;
-            set => RaisePropertyChanged(ref _enableAirMixUp, value);
+            set => SetProperty(ref _enableAirMixUp, value);
         }
         public bool EnableAirMixDown
         {
             get => _enableAirMixDown;
-            set => RaisePropertyChanged(ref _enableAirMixDown, value);
+            set => SetProperty(ref _enableAirMixDown, value);
         }
 
         public bool Illumination
         {
             get => _illumination;
-            set => RaisePropertyChanged(ref _illumination, value);
+            set => SetProperty(ref _illumination, value);
         }
 
         public bool ChekedDefrosterFront
         {
             get => _chekedDefrosterFront;
-            set => RaisePropertyChanged(ref _chekedDefrosterFront, value);
+            set => SetProperty(ref _chekedDefrosterFront, value);
         }
         public bool ChekedDefrostRear
         {
             get => _chekedDefrostRear;
-            set => RaisePropertyChanged(ref _chekedDefrostRear, value);
+            set => SetProperty(ref _chekedDefrostRear, value);
         }
         public bool ChekedAc
         {
             get => _chekedAc;
-            set => RaisePropertyChanged(ref _chekedAc, value);
+            set => SetProperty(ref _chekedAc, value);
         }
         public bool ChekedAuto
         {
             get => _chekedAuto;
-            set => RaisePropertyChanged(ref _chekedAuto, value);
+            set => SetProperty(ref _chekedAuto, value);
         }
         public bool ChekedAirMode
         {
             get => _chekedAirMode;
-            set => RaisePropertyChanged(ref _chekedAirMode, value);
+            set => SetProperty(ref _chekedAirMode, value);
         }
         public bool ChekedFan1
         {
             get => _chekedFan1;
-            set => RaisePropertyChanged(ref _chekedFan1, value);
+            set => SetProperty(ref _chekedFan1, value);
         }
         public bool ChekedAirFront
         {
             get => _chekedAirFront;
-            set => RaisePropertyChanged(ref _chekedAirFront, value);
+            set => SetProperty(ref _chekedAirFront, value);
         }
         public bool ChekedAirDown
         {
             get => _chekedAirDown;
-            set => RaisePropertyChanged(ref _chekedAirDown, value);
+            set => SetProperty(ref _chekedAirDown, value);
         }
         public bool ChekedVentFront
         {
             get => _chekedVentFront;
-            set => RaisePropertyChanged(ref _chekedVentFront, value);
+            set => SetProperty(ref _chekedVentFront, value);
         }
 
         public bool ACBlower0
         {
             get => _blowerStatus0;
-            set => RaisePropertyChanged(ref _blowerStatus0, value);
+            set => SetProperty(ref _blowerStatus0, value);
         }
         public bool ACBlower1
         {
             get => _blowerStatus1;
-            set => RaisePropertyChanged(ref _blowerStatus1, value);
+            set => SetProperty(ref _blowerStatus1, value);
         }
         public bool ACBlower2
         {
             get => _blowerStatus2;
-            set => RaisePropertyChanged(ref _blowerStatus2, value);
+            set => SetProperty(ref _blowerStatus2, value);
         }
         public bool ACBlower3
         {
             get => _blowerStatus3;
-            set => RaisePropertyChanged(ref _blowerStatus3, value);
+            set => SetProperty(ref _blowerStatus3, value);
         }
         public bool ACBlower4
         {
             get => _blowerStatus4;
-            set => RaisePropertyChanged(ref _blowerStatus4, value);
+            set => SetProperty(ref _blowerStatus4, value);
         }
         public bool ACBlower5
         {
             get => _blowerStatus5;
-            set => RaisePropertyChanged(ref _blowerStatus5, value);
+            set => SetProperty(ref _blowerStatus5, value);
         }
         public bool ACBlower6
         {
             get => _blowerStatus6;
-            set => RaisePropertyChanged(ref _blowerStatus6, value);
+            set => SetProperty(ref _blowerStatus6, value);
         }
 
         public bool ACAirMix0
         {
             get => _airMixStatus0;
-            set => RaisePropertyChanged(ref _airMixStatus0, value);
+            set => SetProperty(ref _airMixStatus0, value);
         }
         public bool ACAirMix1
         {
             get => _airMixStatus1;
-            set => RaisePropertyChanged(ref _airMixStatus1, value);
+            set => SetProperty(ref _airMixStatus1, value);
         }
         public bool ACAirMix2
         {
             get => _airMixStatus2;
-            set => RaisePropertyChanged(ref _airMixStatus2, value);
+            set => SetProperty(ref _airMixStatus2, value);
         }
         public bool ACAirMix3
         {
             get => _airMixStatus3;
-            set => RaisePropertyChanged(ref _airMixStatus3, value);
+            set => SetProperty(ref _airMixStatus3, value);
         }
         public bool ACAirMix4
         {
             get => _airMixStatus4;
-            set => RaisePropertyChanged(ref _airMixStatus4, value);
+            set => SetProperty(ref _airMixStatus4, value);
         }
         public bool ACAirMix5
         {
             get => _airMixStatus5;
-            set => RaisePropertyChanged(ref _airMixStatus5, value);
+            set => SetProperty(ref _airMixStatus5, value);
         }
         public bool ACAirMix6
         {
             get => _airMixStatus6;
-            set => RaisePropertyChanged(ref _airMixStatus6, value);
+            set => SetProperty(ref _airMixStatus6, value);
         }
         #endregion
 
@@ -363,6 +363,7 @@ namespace Corolla_GUIMVVM_E120.ViewModels
             _loaderService = loaderService;
 
             device = new DeviceModel();
+
 
             _serialDeviceService.NewDataDevice += _serialDeviceService_NewDataDevice;
         }
@@ -471,6 +472,10 @@ namespace Corolla_GUIMVVM_E120.ViewModels
                 device.HandShake = (string)compositeValues["HandShake"];
                 device.DataBits = (ushort)compositeValues["DataBits"];
                 device.BaudRate = (uint)compositeValues["BaudRate"];
+                device.AutoReconect = (bool)compositeValues["AutoReconect"];
+                device.BreakSignalState = (bool)compositeValues["BreakSignalState"];
+                device.DataTerminalReadyEnabled = (bool)compositeValues["DataTerminalReadyEnabled"];
+                device.RequestToSendEnabled = (bool)compositeValues["RequestToSendEnabled"];
             }
             else
             {

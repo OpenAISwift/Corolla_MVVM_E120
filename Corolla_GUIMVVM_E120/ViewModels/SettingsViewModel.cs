@@ -21,70 +21,134 @@ using Windows.ApplicationModel.Core;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
 {
-    public class SettingsViewModel : ViewModelPageBase
+    public class SettingsViewModel : ViewModelBase
     {
-        #region Variables
+        #region Atributos
 
-        #region Declaracion de Interfaces
         private ILoaderService _loaderService;
         private ILocalAppDataService _localAppDataService;
-        #endregion
 
-        #region Declaracion de Eventos
         private SuspendingEventHandler appSuspendEventHandler;
         private EventHandler<object> appResumeEventHandler;
-        #endregion
 
-        #region Declaracion de Clases
-        public DeviceModel localDataDevice;
-        public DeviceModel selectDevice;
-        #endregion
+        private readonly DeviceModel localDataDevice;
+        private readonly DeviceModel selectDevice;
 
-        private Dictionary<DeviceWatcher, string> mapDeviceWatchersToDeviceSelector;
+        private readonly Dictionary<DeviceWatcher, string> mapDeviceWatchersToDeviceSelector;
         private bool watchersSuspended;
         private bool watchersStarted;
 
-        private ObservableCollection<DeviceListEntry> _listOfDevices;
+        
         public ObservableCollection<DeviceListEntry> ListOfDevices
         {
             get => _listOfDevices;
-            set => RaisePropertyChanged(ref _listOfDevices, value);
+            set => SetProperty(ref _listOfDevices, value);
         }
 
+        #endregion
+
+        #region Propiedades
+
+        private uint _baudRateDeviceSelect;
+
+        private ushort _dataBitsDeviceSelect;
+
+        private bool _autoReconectSelect;
+        private bool _breakSignalStateSelect;
+        private bool _dataTerminalReadyEnabledSelect;
+        private bool _requestToSendEnabledSelect;
+
+        private string _nameDeviceSelect;
+        private string _parityDeviceSelect;
+        private string _stopBitDeviceSelect;
+        private string _handShakeDeviceSelect;
+
+        private ObservableCollection<DeviceListEntry> _listOfDevices;
         private List<uint> _listOfBaudRate;
+        private List<string> _listOfParity;
+        private List<string> _listOfStopBit;
+        private List<string> _listOfHandShake;
+        private List<ushort> _listOfDataBits;
+
+        public uint BaudRateDeviceSelect
+        {
+            get => _baudRateDeviceSelect;
+            set => SetProperty(ref _baudRateDeviceSelect, value);
+        }
+
+        public ushort DataBitsDeviceSelect
+        {
+            get => _dataBitsDeviceSelect;
+            set => SetProperty(ref _dataBitsDeviceSelect, value);
+        }
+
+        public bool AutoReconectSelect
+        {
+            get => _autoReconectSelect;
+            set => SetProperty(ref _autoReconectSelect, value);
+        }
+        public bool BreakSignalStateSelect
+        {
+            get => _breakSignalStateSelect;
+            set => SetProperty(ref _breakSignalStateSelect, value);
+        }
+        public bool DataTerminalReadyEnabledSelect
+        {
+            get => _dataTerminalReadyEnabledSelect;
+            set => SetProperty(ref _dataTerminalReadyEnabledSelect, value);
+        }
+        public bool RequestToSendEnabledSelect
+        {
+            get => _requestToSendEnabledSelect;
+            set => SetProperty(ref _requestToSendEnabledSelect, value);
+        }
+
         public List<uint> ListOfBaudRate
         {
             get => _listOfBaudRate;
-            set => RaisePropertyChanged(ref _listOfBaudRate, value);
+            set => SetProperty(ref _listOfBaudRate, value);
         }
-
-        private List<string> _listOfParity;
         public List<string> ListOfParity
         {
             get => _listOfParity;
-            set => RaisePropertyChanged(ref _listOfParity, value);
+            set => SetProperty(ref _listOfParity, value);
         }
-
-        private List<string> _listOfStopBit;
         public List<string> ListOfStopBit
         {
             get => _listOfStopBit;
-            set => RaisePropertyChanged(ref _listOfStopBit, value);
+            set => SetProperty(ref _listOfStopBit, value);
         }
-
-        private List<string> _listOfHandShake;
         public List<string> ListOfHandShake
         {
             get => _listOfHandShake;
-            set => RaisePropertyChanged(ref _listOfHandShake, value);
+            set => SetProperty(ref _listOfHandShake, value);
         }
-
-        private List<ushort> _listOfDataBits;
         public List<ushort> ListOfDataBits
         {
             get => _listOfDataBits;
-            set => RaisePropertyChanged(ref _listOfDataBits, value);
+            set => SetProperty(ref _listOfDataBits, value);
         }
+        public string NameDeviceSelect
+        {
+            get => _nameDeviceSelect;
+            set => SetProperty(ref _nameDeviceSelect, value);
+        }
+        public string ParityDeviceSelect
+        {
+            get => _parityDeviceSelect;
+            set => SetProperty(ref _parityDeviceSelect, value);
+        }
+        public string StopBitDeviceSelect
+        {
+            get => _stopBitDeviceSelect;
+            set => SetProperty(ref _stopBitDeviceSelect, value);
+        }
+        public string HandShakeDeviceSelect
+        {
+            get => _handShakeDeviceSelect;
+            set => SetProperty(ref _handShakeDeviceSelect, value);
+        }
+
         #endregion
 
         public SettingsViewModel(ILoaderService loaderService, ILocalAppDataService localAppDataService)
@@ -94,6 +158,7 @@ namespace Corolla_GUIMVVM_E120.ViewModels
 
             localDataDevice = new DeviceModel();
             selectDevice = new DeviceModel();
+            mapDeviceWatchersToDeviceSelector = new Dictionary<DeviceWatcher, string>();
 
             ListOfDevices = new ObservableCollection<DeviceListEntry>();
             ListOfBaudRate = new List<uint>
@@ -107,7 +172,6 @@ namespace Corolla_GUIMVVM_E120.ViewModels
                 115200,
                 250000
             };
-
             ListOfParity = new List<string>
             {
                 "None",
@@ -142,7 +206,6 @@ namespace Corolla_GUIMVVM_E120.ViewModels
                 8,
             };
 
-            mapDeviceWatchersToDeviceSelector = new Dictionary<DeviceWatcher, string>();
             watchersStarted = false;
             watchersSuspended = false;
         }
@@ -187,8 +250,7 @@ namespace Corolla_GUIMVVM_E120.ViewModels
 
         private void LoadDeviceData()
         {
-            bool hasContainer = _localAppDataService.ContainerLocalAppDataExists(LocalDataType.DeviceData);
-            if (hasContainer)
+            if (_localAppDataService.ContainerLocalAppDataExists(LocalDataType.DeviceData))
             {
                 ApplicationDataCompositeValue compositeValues = _localAppDataService.GetContainerLocalAppData(LocalDataType.DeviceData);
 
@@ -198,89 +260,58 @@ namespace Corolla_GUIMVVM_E120.ViewModels
                 localDataDevice.HandShake = (string)compositeValues["HandShake"];
                 localDataDevice.DataBits = (ushort)compositeValues["DataBits"];
                 localDataDevice.BaudRate = (uint)compositeValues["BaudRate"];
+                localDataDevice.AutoReconect = (bool)compositeValues["AutoReconect"];
+                localDataDevice.BreakSignalState = (bool)compositeValues["BreakSignalState"];
+                localDataDevice.DataTerminalReadyEnabled = (bool)compositeValues["DataTerminalReadyEnabled"];
+                localDataDevice.RequestToSendEnabled = (bool)compositeValues["RequestToSendEnabled"];
             }
             else
             {
                 _localAppDataService.CreateContainerLocalAppData(LocalDataType.DeviceData);
-                ApplicationDataCompositeValue composite = new ApplicationDataCompositeValue
-                {
-                    ["DeviceName"] = "",
-                    ["DeviceId"] = "",
-                    ["DeviceSelector"] = "",
-                    ["Parity"] = "Even",
-                    ["StopBit"] = "One",
-                    ["HandShake"] = "None",
-                    ["DataBits"] = (ushort)8,
-                    ["BaudRate"] = (uint)115200,
-                };
-                _localAppDataService.SetCompositeLocalAppData(LocalDataType.DeviceData, composite);
-                localDataDevice.Name = "";
-                localDataDevice.Parity = "Even";
-                localDataDevice.StopBit = "One";
-                localDataDevice.HandShake = "None";
-                localDataDevice.DataBits = 8;
-                localDataDevice.BaudRate = 115200;
             }
+
+            NameDeviceSelect = localDataDevice.Name;
+            ParityDeviceSelect = localDataDevice.Parity;
+            StopBitDeviceSelect = localDataDevice.StopBit;
+            HandShakeDeviceSelect = localDataDevice.HandShake;
+            DataBitsDeviceSelect = localDataDevice.DataBits;
+            BaudRateDeviceSelect = localDataDevice.BaudRate;
+            AutoReconectSelect = localDataDevice.AutoReconect;
+            BreakSignalStateSelect = localDataDevice.BreakSignalState;
+            DataTerminalReadyEnabledSelect = localDataDevice.DataTerminalReadyEnabled;
+            RequestToSendEnabledSelect = localDataDevice.RequestToSendEnabled;
         }
 
         private void SaveDeviceData()
         {
-            ApplicationDataCompositeValue composite = new ApplicationDataCompositeValue();
-            if (selectDevice.Name != null)
-            {
-                composite["DeviceName"] = selectDevice.Name;
-            }
-            else
-            {
-                composite["DeviceName"] = localDataDevice.Name;
-            }
+            selectDevice.Name = NameDeviceSelect;
+            selectDevice.Parity = ParityDeviceSelect;
+            selectDevice.StopBit = StopBitDeviceSelect;
+            selectDevice.HandShake = HandShakeDeviceSelect;
+            selectDevice.DataBits = DataBitsDeviceSelect;
+            selectDevice.BaudRate = BaudRateDeviceSelect;
+            selectDevice.AutoReconect = AutoReconectSelect;
+            selectDevice.BreakSignalState = BreakSignalStateSelect;
+            selectDevice.DataTerminalReadyEnabled = DataTerminalReadyEnabledSelect;
+            selectDevice.RequestToSendEnabled = RequestToSendEnabledSelect;
 
-            if (selectDevice.Parity != null)
+            if (localDataDevice.Equals(selectDevice))
             {
-                composite["Parity"] = selectDevice.Parity;
+                ApplicationDataCompositeValue composite = new ApplicationDataCompositeValue
+                {
+                    ["DeviceName"] = selectDevice.Name,
+                    ["Parity"] = selectDevice.Parity,
+                    ["StopBit"] = selectDevice.StopBit,
+                    ["HandShake"] = selectDevice.HandShake,
+                    ["DataBits"] = selectDevice.DataBits,
+                    ["BaudRate"] = selectDevice.BaudRate,
+                    ["AutoReconect"] = selectDevice.AutoReconect,
+                    ["BreakSignalState"] = selectDevice.BreakSignalState,
+                    ["DataTerminalReadyEnabled"] = selectDevice.DataTerminalReadyEnabled,
+                    ["RequestToSendEnabled"] = selectDevice.RequestToSendEnabled
+                };
+                _localAppDataService.SetCompositeLocalAppData(LocalDataType.DeviceData, composite);
             }
-            else
-            {
-                composite["Parity"] = localDataDevice.Parity;
-            }
-
-            if (selectDevice.StopBit != null)
-            {
-                composite["StopBit"] = selectDevice.StopBit;
-            }
-            else
-            {
-                composite["StopBit"] = localDataDevice.StopBit;
-            }
-
-            if (selectDevice.HandShake != null)
-            {
-                composite["HandShake"] = selectDevice.HandShake;
-            }
-            else
-            {
-                composite["HandShake"] = localDataDevice.HandShake;
-            }
-
-            if (selectDevice.DataBits != 0)
-            {
-                composite["DataBits"] = selectDevice.DataBits;
-            }
-            else
-            {
-                composite["DataBits"] = localDataDevice.DataBits;
-            }
-
-            if (selectDevice.BaudRate != 0)
-            {
-                composite["BaudRate"] = selectDevice.BaudRate;
-            }
-            else
-            {
-                composite["BaudRate"] = localDataDevice.BaudRate;
-            }
-
-            _localAppDataService.SetCompositeLocalAppData(LocalDataType.DeviceData, composite);
         }
 
         private void ClearAllData()

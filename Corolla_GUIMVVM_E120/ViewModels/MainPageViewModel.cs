@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
 {
-    public class MainPageViewModel : ViewModelPageBase
+    public class MainPageViewModel : ViewModelBase
     {
 
         public MainPageViewModel()
