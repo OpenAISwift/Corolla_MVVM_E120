@@ -14,7 +14,7 @@
   <mp:PhoneIdentity PhoneProductId="384a5756-212f-40cf-9836-a1a88f91d23d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Corolla</DisplayName>
+    <DisplayName>Corolla Control Unit</DisplayName>
     <PublisherDisplayName>Swift</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -32,13 +32,14 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="Corolla_GUIMVVM_E120.App">
       <uap:VisualElements
-        DisplayName="Corolla_GUIMVVM_E120"
+        DisplayName="Corolla Control Unit"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Corolla_GUIMVVM_E120"
-        BackgroundColor="transparent">
+        BackgroundColor="transparent" Description="Corolla_GUIMVVM_E120">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="portrait"/></uap:InitialRotationPreference>
       </uap:VisualElements>
     </Application>
   </Applications>

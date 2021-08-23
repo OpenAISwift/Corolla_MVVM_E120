@@ -130,6 +130,10 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Logo_Toyota_24x24.png" />
+    <Content Include="Assets\Logo_Toyota_300x300.png" />
+    <Content Include="Assets\Logo_Toyota_88x88.png" />
+    <Content Include="Assets\Pantalla_Presentacion_1240x600.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
