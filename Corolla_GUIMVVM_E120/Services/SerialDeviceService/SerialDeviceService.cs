@@ -4,24 +4,22 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Devices.Enumeration;
 using Windows.Devices.SerialCommunication;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
 
 namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 {
     public class SerialDeviceService : ISerialDeviceService
     {
-        #region Variables
+        #region Propiedades
 
         #region Declaracion de Eventos
-        private SuspendingEventHandler appSuspendEventHandler;
-        private EventHandler<object> appResumeEventHandler;
+        //private SuspendingEventHandler appSuspendEventHandler;
+        //private EventHandler<object> appResumeEventHandler;
 
         private TypedEventHandler<SerialDeviceService, DeviceInformation> deviceCloseCallback;
         private TypedEventHandler<SerialDeviceService, DeviceInformation> deviceConnectedCallback;
@@ -30,13 +28,15 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         private TypedEventHandler<DeviceWatcher, DeviceInformationUpdate> deviceRemovedEventHandler;
         private TypedEventHandler<DeviceAccessInformation, DeviceAccessChangedEventArgs> deviceAccessEventHandler;
 
-        public event EventHandler AvailableData;
+        public event EventHandler<DeviceNewDataEventArgs> EventDeviceNewData;
+        public event EventHandler<DeviceUpdateEventArgs> EventDeviceUpdate;
+
+        public event EventHandler<DeviceStatusEventArgs> EventDeviceStatus;
         #endregion
 
         #region Declaracion de clases
-        private DeviceModel localDeviceModel;
-        private ClimateControlModel climateControlData;
 
+        private DeviceModel localDeviceModel;
         private DeviceInformation deviceInformation;
         private DeviceAccessInformation deviceAccessInformation;
         private DeviceWatcher deviceWatcher;
@@ -64,7 +64,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 
         private bool changedSettings;
         private bool deviceIsDetected;
-        private bool watcherSuspended;
+        //private bool watcherSuspended;
         private bool watcherStarted;
         private bool isEnabledAutoReconnect;
         #endregion
@@ -72,10 +72,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         #region Propiedades
         private bool IsDeviceConnected => device != null;
 
-        public ClimateControlModel ControlModelData 
-        {
-            get => climateControlData;
-        }
+        public ClimateControlModel ControlModelData { get; }
 
         #endregion
 
@@ -84,40 +81,16 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         public SerialDeviceService()
         {
             localDeviceModel = new DeviceModel();
-            climateControlData = new ClimateControlModel();
+            ControlModelData = new ClimateControlModel();
 
             watcherStarted = false;
-            watcherSuspended = false;
+            //watcherSuspended = false;
+
+            deviceNewDataEventArgs = new DeviceNewDataEventArgs();
         }
 
-        /// <summary>
-        /// Registro de eventos de suspensión/reanudación de la aplicación. 
-        /// También nos registraremos para cuando la app exista 
-        /// </summary>
-        private void RegisterForAppEvents()
-        {
-            appSuspendEventHandler = new SuspendingEventHandler(OnAppSuspension);
-            appResumeEventHandler = new EventHandler<object>(OnAppResume);
-
-            // Este evento se lanza cuando se sale de la aplicación
-            // y cuando se suspende la aplicación
-            Application.Current.Suspending += appSuspendEventHandler;
-            Application.Current.Resuming += appResumeEventHandler;
-        }
-
-        /// <summary>
-        /// Este evento se lanza cuando se sale de la aplicación y 
-        /// cuando se suspende la aplicación
-        /// </summary>
-        private void UnregisterFromAppEvents()
-        {
-            Application.Current.Suspending -= appSuspendEventHandler;
-            Application.Current.Resuming -= appResumeEventHandler;
-
-            appSuspendEventHandler = null;
-            appResumeEventHandler = null;
-        }
-
+        #region Metodos de Eventos
+        private DeviceNewDataEventArgs deviceNewDataEventArgs;
         /// <summary>
         /// Registro para los eventos Added y Removed.
         /// Tenga en cuenta que, al desconectar el dispositivo, éste puede ser cerrado por el sistema
@@ -140,6 +113,51 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         }
 
         /// <summary>
+        /// Registro de eventos de suspensión/reanudación de la aplicación. 
+        /// También nos registraremos para cuando la app exista 
+        /// </summary>
+        //private void RegisterForAppEvents()
+        //{
+        //    appSuspendEventHandler = new SuspendingEventHandler(OnAppSuspension);
+        //    appResumeEventHandler = new EventHandler<object>(OnAppResume);
+
+        //    // Este evento se lanza cuando se sale de la aplicación
+        //    // y cuando se suspende la aplicación
+        //    Application.Current.Suspending += appSuspendEventHandler;
+        //    Application.Current.Resuming += appResumeEventHandler;
+        //}
+
+        /// <summary>
+        /// Este evento se lanza cuando se sale de la aplicación y 
+        /// cuando se suspende la aplicación
+        /// </summary>
+        //private void UnregisterFromAppEvents()
+        //{
+        //    Application.Current.Suspending -= appSuspendEventHandler;
+        //    Application.Current.Resuming -= appResumeEventHandler;
+
+        //    appSuspendEventHandler = null;
+        //    appResumeEventHandler = null;
+        //}
+
+        protected virtual void DeviceStatusEvent(DeviceStatusEventArgs eventArgs)
+        {
+            EventDeviceStatus?.Invoke(this, eventArgs);
+        }
+
+        protected virtual void DeviceNewDataEvent(DeviceNewDataEventArgs eventArgs)
+        {
+            EventDeviceNewData?.Invoke(this, eventArgs);
+        }
+
+        protected virtual void DeviceUpdateEvent(DeviceUpdateEventArgs eventArgs)
+        {
+            EventDeviceUpdate?.Invoke(this, eventArgs);
+        }
+
+        #endregion
+
+        /// <summary>
         /// Si se ha instanciado un objeto Serial (se abre un handle del dispositivo), 
         /// debemos cerrarlo antes de que la app entre en suspensión porque la API lo 
         /// cierra automáticamente por nosotros si no lo hacemos. Al reanudar, la API
@@ -156,20 +174,20 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         /// <summary>
         /// <param name="sender"></param>
         /// <param name="eventArgs"></param>
-        private void OnAppSuspension(object sender, SuspendingEventArgs args)
-        {
-            if (watcherStarted)
-            {
-                watcherSuspended = true;
-                StopDeviceWatcher();
-            }
-            else
-            {
-                watcherSuspended = false;
-            }
+        //private void OnAppSuspension(object sender, SuspendingEventArgs args)
+        //{
+        //    if (watcherStarted)
+        //    {
+        //        watcherSuspended = true;
+        //        StopDeviceWatcher();
+        //    }
+        //    else
+        //    {
+        //        watcherSuspended = false;
+        //    }
 
-            CloseCurrentlyConnectedDevice();
-        }
+        //    CloseCurrentlyConnectedDevice();
+        //}
 
         /// <summary>
         /// Al reanudar en la aplicación, debemos reabrir un handle al dispositivo 
@@ -183,14 +201,14 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
         /// <summary>
         /// <param name="sender"></param>
         /// <param name="arg"></param>
-        private void OnAppResume(object sender, object args)
-        {
-            if (watcherSuspended)
-            {
-                watcherSuspended = false;
-                StartDeviceWatcher();
-            }
-        }
+        //private void OnAppResume(object sender, object args)
+        //{
+        //    if (watcherSuspended)
+        //    {
+        //        watcherSuspended = false;
+        //        StartDeviceWatcher();
+        //    }
+        //}
 
         public void DeviceCheck(DeviceModel device)
         {
@@ -210,6 +228,10 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                         }
                     }
                 }
+                else
+                {
+                    DeviceCheck();
+                }
                 localDeviceModel = device;
                 if (changedSettings)
                 {
@@ -217,7 +239,7 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 
                     changedSettings = false;
                 }
-                DeviceCheck();
+
             }
         }
 
@@ -228,6 +250,16 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
             if (IsDeviceConnected != true && deviceIsDetected)
             {
                 _ = await OpenDeviceAsync();
+            }
+            else
+            {
+                DeviceStatusEventArgs data = new DeviceStatusEventArgs
+                {
+                    IsDeviceConnected = false,
+                    DeviceMessage = "Dispositivo no encontrado"
+                };
+
+                DeviceStatusEvent(data);
             }
         }
 
@@ -273,10 +305,10 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
 
                 //Notificar a la llamada de retorno registrada que el dispositivo ha sido abierto
                 deviceConnectedCallback?.Invoke(this, deviceInformation);
-                if (appSuspendEventHandler == null || appResumeEventHandler == null)
-                {
-                    RegisterForAppEvents();
-                }
+                //if (appSuspendEventHandler == null || appResumeEventHandler == null)
+                //{
+                //    RegisterForAppEvents();
+                //}
                 // Crear y registrar los eventos del observador de dispositivos para el dispositivo
                 // que se va a abrir a menos que estemos reabriendo el dispositivo
                 if (deviceWatcher == null)
@@ -296,24 +328,29 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                 }
 
                 successfullyOpenedDevice = true;
+                DeviceStatusEventArgs data = new DeviceStatusEventArgs
+                {
+                    IsDeviceConnected = true,
+                    DeviceMessage = null
+                };
+                DeviceStatusEvent(data);
             }
             else
             {
-                successfullyOpenedDevice = false;
-                //notificationStatus = NotifyType.ErrorMessage;
-                //var deviceAccessStatus = DeviceAccessInformation.CreateFromId(LocalApplicationData.LocalData.DeviceId).CurrentStatus;
+                DeviceStatusEventArgs data = new DeviceStatusEventArgs
+                {
+                    IsDeviceConnected = false,
+                };
+                DeviceAccessStatus deviceAccessStatus = DeviceAccessInformation.CreateFromId(deviceInformation.Id).CurrentStatus;
 
-                //if (deviceAccessStatus == DeviceAccessStatus.DeniedByUser)
-                //{
-                //    notificationMessage = "Acceso al dispositivo bloquedo por el usuario";
-                //}
-                //else
-                //{
-                //    notificationMessage = deviceAccessStatus == DeviceAccessStatus.DeniedBySystem
-                //        ? "Acceso al dispositivo bloquedo por el sistema"
-                //        : "Error desconocido, posiblemente abierto por otra aplicación";
-                //}
-                //_ = MainPage.Current.NotifyUser(notificationMessage, notificationStatus);
+                data.DeviceMessage = deviceAccessStatus == DeviceAccessStatus.DeniedByUser
+                    ? "Acceso al dispositivo bloquedo por el usuario"
+                    : deviceAccessStatus == DeviceAccessStatus.DeniedBySystem
+                    ? "Acceso al dispositivo bloquedo por el sistema"
+                    : "Error desconocido, posiblemente abierto por otra aplicación";
+
+                successfullyOpenedDevice = false;
+                DeviceStatusEvent(data);
             }
             return successfullyOpenedDevice;
         }
@@ -381,15 +418,21 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
             {
                 string strFromPort = DataReaderObject.ReadString(bytesRead);
                 FrameAnalyzer(strFromPort);
-                AvailableData?.Invoke(climateControlData, null);
                 Debug.WriteLine("Recivido:" + strFromPort);
             }
         }
 
         private void FrameAnalyzer(string data)
         {
+            bool updateData = false;
+            bool updateStatus = false;
+
             string str_dataInt = data;
+
+            DeviceUpdateEventArgs updateEventArgs = new DeviceUpdateEventArgs();
+
             str_data = str_dataInt.Split(str_Delimiter, StringSplitOptions.RemoveEmptyEntries);
+
             if (str_data[0] == "<")
             {
                 for (byte i = 1; i < str_data.Length; i += 1)
@@ -399,64 +442,86 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                         case "I":
                             if (str_data[i + 1] == "1")
                             {
-                                climateControlData.Illumination = true;
+                                updateEventArgs.IlluminationStatus = true;
+                                updateStatus = true;
                                 break;
                             }
                             else
                             {
-                                climateControlData.Illumination = false;
+                                updateEventArgs.IlluminationStatus = false;
+                                updateStatus = true;
                                 break;
                             }
                         case "Te":
-                            climateControlData.EvaporatorTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
+                            deviceNewDataEventArgs.EvaporatorTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
+                            updateData = true;
                             break;
                         case "Ta":
-                            climateControlData.AmbientTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
+                            deviceNewDataEventArgs.AmbientTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
+                            updateData = true;
                             break;
                         case "Ti":
-                            climateControlData.InsideTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
+                            deviceNewDataEventArgs.InsideTemperature = Convert.ToString(short.Parse(str_data[i + 1]));
+                            updateData = true;
                             break;
                         case "Ts":
-                            climateControlData.ThermalSensation = str_data[i + 1];
+                            deviceNewDataEventArgs.ThermalSensation = Convert.ToString(short.Parse(str_data[i + 1]));
+                            updateData = true;
                             break;
                         case "H":
-                            climateControlData.InsideHumidity = Convert.ToString(short.Parse(str_data[i + 1]));
+                            deviceNewDataEventArgs.InsideHumidity = Convert.ToString(short.Parse(str_data[i + 1]));
+                            updateData = true;
                             break;
                         case "Pr":
-                            climateControlData.DewPointValue = Convert.ToString(short.Parse(str_data[i + 1]));
+                            deviceNewDataEventArgs.DewPoint = Convert.ToString(short.Parse(str_data[i + 1]));
+                            updateData = true;
                             break;
                         case "La":
-                            climateControlData.AmbientLight = Convert.ToString(short.Parse(str_data[i + 1]));
+                            deviceNewDataEventArgs.AmbientLight = Convert.ToString(short.Parse(str_data[i + 1]));
+                            updateData = true;
                             break;
                         case "F1":
                             if (str_data[i + 1] == "1")
                             {
-                                climateControlData.StatusFan1 = true;
+                                updateEventArgs.FanSatus = true;
+                                updateStatus = true;
                                 break;
                             }
                             else
                             {
-                                climateControlData.StatusFan1 = false;
+                                updateEventArgs.FanSatus = false;
+                                updateStatus = true;
                                 break;
                             }
                         case "Bl":
-                            climateControlData.StatusBlower = str_data[i + 1];
+                            updateEventArgs.BlowerStatus = byte.Parse(str_data[i + 1]);
+                            updateStatus = true;
                             break;
                         case "Co":
                             if (str_data[i + 1] == "1")
                             {
-                                climateControlData.StatusMagneticClutch = true;
+                                updateEventArgs.MagneticClutchStatus = true;
+                                updateStatus = true;
                                 break;
                             }
                             else
                             {
-                                climateControlData.StatusMagneticClutch = false;
+                                updateEventArgs.MagneticClutchStatus = false;
+                                updateStatus = true;
                                 break;
                             }
 
                         default:
                             break;
                     }
+                }
+                if (updateData)
+                {
+                    DeviceNewDataEvent(deviceNewDataEventArgs);
+                }
+                if (updateStatus)
+                {
+                    DeviceUpdateEvent(updateEventArgs);
                 }
             }
         }
@@ -569,10 +634,10 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                 deviceAccessInformation = null;
             }
 
-            if (appSuspendEventHandler != null || appResumeEventHandler != null)
-            {
-                UnregisterFromAppEvents();
-            }
+            //if (appSuspendEventHandler != null || appResumeEventHandler != null)
+            //{
+            //    UnregisterFromAppEvents();
+            //}
 
             deviceInformation = null;
             deviceSelector = null;
@@ -613,6 +678,16 @@ namespace Corolla_GUIMVVM_E120.Services.SerialDeviceService
                 // Cierra el dispositivo
                 device.Dispose();
                 device = null;
+
+                _ = CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                   {
+                       DeviceStatusEventArgs data = new DeviceStatusEventArgs
+                       {
+                           IsDeviceConnected = false,
+                           DeviceMessage = "Dispositivo desconectado"
+                       };
+                       DeviceStatusEvent(data);
+                   });
             }
         }
 

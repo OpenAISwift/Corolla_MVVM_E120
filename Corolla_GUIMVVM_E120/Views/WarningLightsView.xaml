@@ -19,7 +19,7 @@
             Height="100"
             Width="280"
             Command="{x:Bind Control.WarningLigth}"
-            IsEnabled="{x:Bind Control.EnableWarningLigth}"
+            IsEnabled="{x:Bind Control.EnableWarningLigth, Mode=OneWay}"
             IsChecked="{x:Bind Control.ChekedWarningLigth, Mode=TwoWay}">
             <StackPanel 
                 Orientation="Horizontal">

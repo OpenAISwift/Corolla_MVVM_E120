@@ -1,17 +1,15 @@
-﻿using Corolla_GUIMVVM_E120.ViewModels.Base;
+﻿using Corolla_GUIMVVM_E120.Contants;
 using Corolla_GUIMVVM_E120.Models;
-
-using Corolla_GUIMVVM_E120.Services.SerialDeviceService;
-using Corolla_GUIMVVM_E120.Services.LocalAppDataService;
 using Corolla_GUIMVVM_E120.Services.DialogService;
 using Corolla_GUIMVVM_E120.Services.LoaderService;
-
-using System.Threading.Tasks;
-using Windows.UI.Xaml.Navigation;
-using Windows.Storage;
-using Corolla_GUIMVVM_E120.Contants;
-using System.Windows.Input;
+using Corolla_GUIMVVM_E120.Services.LocalAppDataService;
+using Corolla_GUIMVVM_E120.Services.SerialDeviceService;
+using Corolla_GUIMVVM_E120.ViewModels.Base;
 using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Windows.Storage;
+using Windows.UI.Xaml.Navigation;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
 {
@@ -27,7 +25,6 @@ namespace Corolla_GUIMVVM_E120.ViewModels
 
         private const char char_StartMarker = '<';
         private const char char_EndMarker = '>';
-        private readonly string[] str_Delimiter = new string[] { " ", ",", ":" };
 
         private string _deviceData = null;
         public string[] str_data;
@@ -55,6 +52,20 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         private bool _enableBlowerDown = true;
         private bool _enableAirMixUp = true;
         private bool _enableAirMixDown = true;
+        private bool _enableBlowerStatus0 = true;
+        private bool _enableBlowerStatus1 = true;
+        private bool _enableBlowerStatus2 = true;
+        private bool _enableBlowerStatus3 = true;
+        private bool _enableBlowerStatus4 = true;
+        private bool _enableBlowerStatus5 = true;
+        private bool _enableBlowerStatus6 = true;
+        private bool _enableAirMixStatus0 = true;
+        private bool _enableAirMixStatus1 = true;
+        private bool _enableAirMixStatus2 = true;
+        private bool _enableAirMixStatus3 = true;
+        private bool _enableAirMixStatus4 = true;
+        private bool _enableAirMixStatus5 = true;
+        private bool _enableAirMixStatus6 = true;
 
         private bool _illumination = false;
 
@@ -193,6 +204,76 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         {
             get => _enableAirMixDown;
             set => SetProperty(ref _enableAirMixDown, value);
+        }
+        public bool EnableBlowerStatus0
+        {
+            get => _enableBlowerStatus0;
+            set => SetProperty(ref _enableBlowerStatus0, value);
+        }
+        public bool EnableBlowerStatus1
+        {
+            get => _enableBlowerStatus1;
+            set => SetProperty(ref _enableBlowerStatus1, value);
+        }
+        public bool EnableBlowerStatus2
+        {
+            get => _enableBlowerStatus2;
+            set => SetProperty(ref _enableBlowerStatus2, value);
+        }
+        public bool EnableBlowerStatus3
+        {
+            get => _enableBlowerStatus3;
+            set => SetProperty(ref _enableBlowerStatus3, value);
+        }
+        public bool EnableBlowerStatus4
+        {
+            get => _enableBlowerStatus4;
+            set => SetProperty(ref _enableBlowerStatus4, value);
+        }
+        public bool EnableBlowerStatus5
+        {
+            get => _enableBlowerStatus5;
+            set => SetProperty(ref _enableBlowerStatus5, value);
+        }
+        public bool EnableBlowerStatus6
+        {
+            get => _enableBlowerStatus6;
+            set => SetProperty(ref _enableBlowerStatus6, value);
+        }
+        public bool EnableAirMixStatus0
+        {
+            get => _enableAirMixStatus0;
+            set => SetProperty(ref _enableAirMixStatus0, value);
+        }
+        public bool EnableAirMixStatus1
+        {
+            get => _enableAirMixStatus1;
+            set => SetProperty(ref _enableAirMixStatus1, value);
+        }
+        public bool EnableAirMixStatus2
+        {
+            get => _enableAirMixStatus2;
+            set => SetProperty(ref _enableAirMixStatus2, value);
+        }
+        public bool EnableAirMixStatus3
+        {
+            get => _enableAirMixStatus3;
+            set => SetProperty(ref _enableAirMixStatus3, value);
+        }
+        public bool EnableAirMixStatus4
+        {
+            get => _enableAirMixStatus4;
+            set => SetProperty(ref _enableAirMixStatus4, value);
+        }
+        public bool EnableAirMixStatus5
+        {
+            get => _enableAirMixStatus5;
+            set => SetProperty(ref _enableAirMixStatus5, value);
+        }
+        public bool EnableAirMixStatus6
+        {
+            get => _enableAirMixStatus6;
+            set => SetProperty(ref _enableAirMixStatus6, value);
         }
 
         public bool Illumination
@@ -368,7 +449,10 @@ namespace Corolla_GUIMVVM_E120.ViewModels
 
         public override Task OnNavigatedFrom(NavigationEventArgs args)
         {
-            _serialDeviceService.AvailableData -= SerialDeviceAvailableData;
+
+            _serialDeviceService.EventDeviceNewData -= EventDeviceNewData;
+            _serialDeviceService.EventDeviceStatus -= DeviceStatus;
+            _serialDeviceService.EventDeviceUpdate -= EventDeviceUpdate;
 
             return null;
         }
@@ -379,28 +463,120 @@ namespace Corolla_GUIMVVM_E120.ViewModels
             UpdateViewClimateControl(_serialDeviceService.ControlModelData);
 
             _serialDeviceService.DeviceCheck(device);
-            _serialDeviceService.AvailableData += SerialDeviceAvailableData;
+            _serialDeviceService.EventDeviceNewData += EventDeviceNewData;
+            _serialDeviceService.EventDeviceStatus += DeviceStatus;
+            _serialDeviceService.EventDeviceUpdate += EventDeviceUpdate;
 
             return null;
         }
 
-        private void SerialDeviceAvailableData(object sender, EventArgs e)
+        private void EventDeviceUpdate(object sender, DeviceUpdateEventArgs e)
         {
-            ClimateControlModel climateControl = (ClimateControlModel)sender;
-            UpdateViewClimateControl(climateControl);
+            if (ChekedFan1 != e.FanSatus)
+            {
+                ChekedFan1 = e.FanSatus;
+            }
+            if (ChekedAc != e.MagneticClutchStatus)
+            {
+                ChekedAc = e.MagneticClutchStatus;
+            }
+            StatusBlower(Convert.ToString(e.BlowerStatus));
+        }
+
+        private void EventDeviceNewData(object sender, DeviceNewDataEventArgs e)
+        {
+            AmbientLight = e.AmbientLight;
+            AmbientTemperature = e.AmbientTemperature;
+            EvaporatorTemperature = e.EvaporatorTemperature;
+            InsideTemperature = e.InsideTemperature;
+            ThermalSensation = e.ThermalSensation;
+            InsideHumidity = e.InsideHumidity;
+            DewPointValue = e.DewPoint;
+        }
+
+        private void DeviceStatus(object sender, DeviceStatusEventArgs e)
+        {
+            if (!e.IsDeviceConnected)
+            {
+                _dialogService.StatusNotification(e.DeviceMessage, NotifyType.Status);
+                EnableControls(false);
+            }
+            else
+            {
+                EnableControls(true);
+            }
+        }
+
+        private void EnableControls(bool status)
+        {
+            if (status)
+            {
+                EnabledDefrosterFront = true;
+                EnabledDefrostRear = true;
+                EnabledAc = true;
+                EnabledAuto = true;
+                EnabledAirMode = true;
+                EnabledFan1 = true;
+                EnabledVentFront = true;
+                EnabledAirFront = true;
+                EnabledAirDown = true;
+                EnableBlowerDown = true;
+                EnableBlowerUp = true;
+                EnableAirMixDown = true;
+                EnableAirMixUp = true;
+                EnableBlowerStatus0 = true;
+                EnableBlowerStatus1 = true;
+                EnableBlowerStatus2 = true;
+                EnableBlowerStatus3 = true;
+                EnableBlowerStatus4 = true;
+                EnableBlowerStatus5 = true;
+                EnableBlowerStatus6 = true;
+                EnableAirMixStatus0 = true;
+                EnableAirMixStatus1 = true;
+                EnableAirMixStatus2 = true;
+                EnableAirMixStatus3 = true;
+                EnableAirMixStatus4 = true;
+                EnableAirMixStatus5 = true;
+                EnableAirMixStatus6 = true;
+            }
+            else
+            {
+                EnabledDefrosterFront = false;
+                EnabledDefrostRear = false;
+                EnabledAc = false;
+                EnabledAuto = false;
+                EnabledAirMode = false;
+                EnabledFan1 = false;
+                EnabledVentFront = false;
+                EnabledAirFront = false;
+                EnabledAirDown = false;
+                EnableBlowerDown = false;
+                EnableBlowerUp = false;
+                EnableAirMixDown = false;
+                EnableAirMixUp = false;
+                EnableBlowerStatus0 = false;
+                EnableBlowerStatus1 = false;
+                EnableBlowerStatus2 = false;
+                EnableBlowerStatus3 = false;
+                EnableBlowerStatus4 = false;
+                EnableBlowerStatus5 = false;
+                EnableBlowerStatus6 = false;
+                EnableAirMixStatus0 = false;
+                EnableAirMixStatus1 = false;
+                EnableAirMixStatus2 = false;
+                EnableAirMixStatus3 = false;
+                EnableAirMixStatus4 = false;
+                EnableAirMixStatus5 = false;
+                EnableAirMixStatus6 = false;
+            }
         }
 
         private void UpdateViewClimateControl(ClimateControlModel climateControlModel)
         {
-            AmbientLight = climateControlModel.AmbientLight;
-            AmbientTemperature = climateControlModel.AmbientTemperature;
-            EvaporatorTemperature = climateControlModel.EvaporatorTemperature;
-            InsideTemperature = climateControlModel.InsideTemperature;
-            ThermalSensation = climateControlModel.ThermalSensation;
-            InsideHumidity = climateControlModel.InsideHumidity;
+
             ChekedAc = climateControlModel.StatusMagneticClutch;
             ChekedFan1 = climateControlModel.StatusFan1;
-            DewPointValue = climateControlModel.DewPointValue;
+
             //StatusBlower(climateControlModel.StatusBlower);
         }
         /// <summary>

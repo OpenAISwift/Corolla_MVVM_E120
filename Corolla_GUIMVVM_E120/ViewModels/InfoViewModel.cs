@@ -1,13 +1,8 @@
-﻿using Corolla_GUIMVVM_E120.ViewModels.Base;
+﻿using Corolla_GUIMVVM_E120.Models;
 using Corolla_GUIMVVM_E120.Services.SerialDeviceService;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Corolla_GUIMVVM_E120.ViewModels.Base;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
-using Corolla_GUIMVVM_E120.Models;
 
 namespace Corolla_GUIMVVM_E120.ViewModels
 {
@@ -26,7 +21,12 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         public InfoViewModel(ISerialDeviceService serialDeviceService)
         {
             _serialDeviceService = serialDeviceService;
-            _serialDeviceService.AvailableData += SerialDeviceAvailableData;
+            _serialDeviceService.EventDeviceNewData += EventDeviceNewData; ;
+        }
+
+        private void EventDeviceNewData(object sender, DeviceNewDataEventArgs e)
+        {
+            AmbientTemperature = e.AmbientTemperature;
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs args)
@@ -35,19 +35,9 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         }
 
         public override Task OnNavigatedTo(NavigationEventArgs args)
-        {   
+        {
             return null;
         }
 
-        private void SerialDeviceAvailableData(object sender, EventArgs e)
-        {
-            ClimateControlModel climateControl = (ClimateControlModel)sender;
-            UpdateViewClimateControl(climateControl);
-        }
-
-        private void UpdateViewClimateControl(ClimateControlModel climateControlModel)
-        {
-            AmbientTemperature = climateControlModel.AmbientTemperature;
-        }
     }
 }

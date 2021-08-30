@@ -126,6 +126,9 @@
   <data name="DeviceNotConfigured" xml:space="preserve">
     <value>Dispositivo no configurado</value>
   </data>
+  <data name="DeviceNotDetectedMessage" xml:space="preserve">
+    <value>Dispositivo no detectado</value>
+  </data>
   <data name="ErrorApplicationDialog" xml:space="preserve">
     <value>Error de aplicación</value>
   </data>

@@ -10,7 +10,8 @@ namespace Corolla_GUIMVVM_E120.Models
         public string AmbientLight { get; set; }
         public string DewPointValue { get; set; }
         public string ThermalSensation { get; set; }
-        public string StatusBlower { get; set; }
+
+        public byte StatusBlower { get; set; }
 
         public bool Illumination { get; set; }
         public bool StatusFan1 { get; set; }
@@ -25,7 +26,7 @@ namespace Corolla_GUIMVVM_E120.Models
             AmbientLight = "0";
             DewPointValue = "0";
             ThermalSensation = "0";
-            StatusBlower = "0";
+            StatusBlower = 0;
 
             Illumination = false;
             StatusFan1 = false;

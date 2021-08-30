@@ -42,7 +42,12 @@ namespace Corolla_GUIMVVM_E120.ViewModels
         public WarningLightsViewModel(ISerialDeviceService serialDeviceService)
         {
             _serialDeviceService = serialDeviceService;
+            _serialDeviceService.EventDeviceStatus += DeviceStatus;
+        }
 
+        private void DeviceStatus(object sender, Models.DeviceStatusEventArgs e)
+        {
+            EnableWarningLigth = e.IsDeviceConnected;
         }
 
         public override Task OnNavigatedFrom(NavigationEventArgs args)

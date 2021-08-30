@@ -210,6 +210,11 @@
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="Indeterminate"/>
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="Ellipse_Status.(UIElement.Opacity)" Value="0.5"/>
+                                    </VisualState.Setters>
+                                </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                         <Ellipse x:Name="Ellipse_Status" Stretch="Uniform" Stroke="Black" Fill="White" RenderTransformOrigin="0.5,0.5">

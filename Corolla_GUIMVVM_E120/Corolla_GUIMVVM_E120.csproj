@@ -82,8 +82,11 @@
     </Compile>
     <Compile Include="Contants\Constants.cs" />
     <Compile Include="Models\ClimateControlModel.cs" />
+    <Compile Include="Models\DeviceNewDataEventArgs.cs" />
+    <Compile Include="Models\DeviceStatusEventArgs.cs" />
     <Compile Include="Models\DeviceListEntry.cs" />
     <Compile Include="Models\DeviceModel.cs" />
+    <Compile Include="Models\DeviceUpdateEventArgs.cs" />
     <Compile Include="Models\PageType.cs" />
     <Compile Include="Services\DialogService\DialogService.cs" />
     <Compile Include="Services\DialogService\IDialogService.cs" />
